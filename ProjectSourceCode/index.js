@@ -89,34 +89,35 @@ app.get('/login', (req, res) => {
   res.render('pages/login');
 });
 
-
-
 // Route to render the registration page
 app.get('/register', (req, res) => {
   res.render('pages/register');
 });
 
+// Route to render the explore page
+app.get('/explore', (req, res) => {
+  res.render('pages/explore');
+});
 
 
-  // Handle user registration
-  app.post('/register', async (req, res) => {
-    try {
-        // Hash the password using bcrypt library
-        const hash = await bcrypt.hash(req.body.password, 10);
-        
-        // To-DO: Insert username and hashed password into the 'users' table
-        // Insert username and hashed password into the 'users' table
-        await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
 
-        //Redirect to GET /login route page after data has been inserted successfully
-        res.redirect('/login');
-    } catch (error) {
-        console.error(error);
-        // If the insert fails, redirect to GET /register route
-        console.log("omg not working lol")
-        res.redirect('/register');
-    }
-  });
+
+
+// Handle user registration
+app.post('/register', async (req, res) => {
+  try {
+      const hash = await bcrypt.hash(req.body.password, 10);
+      await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
+      res.redirect('/login');
+  } catch (error) {
+      console.error(error);
+      console.log("REGISTER NOT WORKING")
+      res.redirect('/register');
+  }
+});
+
+
+
 
 // Route to handle user login
 app.post('/login', async (req, res) => {
