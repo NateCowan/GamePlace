@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+      .username-password-container{
+        text-align: right;
+        padding-right: 33vh;
+      }
+      form {
+        border-radius: 10px;
+        padding: 20px; 
+        background-color: #f5f5f5; 
+        display: inline-block; 
+      }
+
+      form input[type="text"],
+      form input[type="password"] {
+        width: 70%; 
+        padding: 10px; 
+        border: 1px solid #ccc; 
+        border-radius: 8px; 
+        margin-bottom: 10px; 
+        box-sizing: border-box; 
+        transition: border-color 0.3s ease; 
+      }
+
+      form input[type="text"]:hover,
+      form input[type="password"]:hover {
+        border-color: #aaa; 
+      }
+
+      /*SUBMIT BUTTON*/
+      form input[type="submit"] {
+        width: 30%; 
+        padding: 10px; 
+        border: none; 
+        border-radius: 8px; 
+        background-color: rgb(124, 124, 124); 
+        cursor: pointer; 
+      }
+      form input[type="submit"]:hover {
+        background-color: green; 
+      }
+
+      /* Forgot password link */
+      .forgot-password-link {
+        text-align: left; 
+      }
+
+      /*"login" text styling*/
+      .the-text {
+        font-size: 60px;
+        padding-left: 6%;
+        padding-top: 10%;
+      }
+      
+      .dont-have-account{
+        font-size: 36px;
+        padding-top: 5%;
+        padding-left: 18%;
+      }
+
+
+    </style>
+</head>
+
+<body>
+
+  <div class="the-text">Login!</div>
+
+  <div class="username-password-container">
+    <form action="/login" method="POST">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username"><br>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password"><br><br>
+
+      <input type="submit" value="Login"><br>
+      <div class="forgot-password-link">
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Forgot password?</a>
+      </div>
+    </form>
+  </div>
+
+  <div class = "dont-have-account"> Don't have an account?  <a href="/register"> Register </div>
+</body>
+</html>
