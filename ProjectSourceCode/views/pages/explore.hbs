@@ -1,9 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<h1 class="p-3">Explore:</h1>
 
-</head>
-<body>
-    <div>EXPORE PAGE</div>
-</body>
-</html>
+<div class="container d-flex p-2">
+{{!-- SEARCH BAR --}}
+    <div class="search-div" style="flex: 2;">
+        <form action="/search" method="POST">
+            <input type="text" name="search" id="search-bar" placeholder="search">
+        </form>
+    </div>
+
+
+    {{!-- Implement the following request path to get data from the API to display the 
+    genres, https://api.igdb.com/v4/genres --}}
+    <div>
+    {{!-- GENRE DROPDOWN --}}
+        <select name="filter" id="FILTER" class="form-select form-select-sm">
+            <option selected>Filter by Genre</option>
+            {{!-- temporary options until we use the API --}}
+            <option value="action">Action</option>
+            <option value="adventure">Adventure</option>
+            <option value="co-op">Co-Op</option>
+            <option value="etc">etc.</option>
+
+        {{!-- {{#each genre}}
+            <option value=""></option>
+        {{/each}} --}}
+
+        </select>
+    </div>
+
+</div>
+
+
+{{!-- DISPLAY BOOTSTRAP CARDS FOR GAMES --}}
+<div class="container d-flex flex-column p-3">
+
+
+    <h4>Popular</h4>
+
+    <div class="d-flex flex-wrap justify-content-evenly p-1">
+
+    {{!-- temporary cards until we use the API --}}
+        <div class="card" style="width: 8rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Any quick game info for the user.</p>
+            </div>
+        </div>
+        <div class="card" style="width: 8rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Any quick game info for the user.</p>
+            </div>
+        </div>
+        <div class="card" style="width: 8rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Any quick game info for the user.</p>
+            </div>
+        </div>
+        <div class="card" style="width: 8rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Any quick game info for the user.</p>
+            </div>
+        </div>
+        <div class="card" style="width: 8rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Any quick game info for the user.</p>
+            </div>
+        </div>
+        <div class="card" style="width: 8rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Any quick game info for the user.</p>
+            </div>
+        </div>
+
+        {{!-- {{#each genre}}
+            create card here
+        {{/each}} --}}
+
+    </div>
+
+    
+
+</div>
