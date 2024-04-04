@@ -94,10 +94,6 @@ app.get('/register', (req, res) => {
   res.render('pages/register');
 });
 
-// Route to render the explore page
-app.get('/explore', (req, res) => {
-  res.render('pages/explore');
-});
 
 
 
@@ -151,6 +147,38 @@ app.post('/login', async (req, res) => {
 });
 
 
+
+// Authentication Middleware.
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    // Default to login page.
+    return res.redirect('/login');
+  }
+  next();
+};
+
+// Authentication Required
+app.use(auth);
+
+
+
+
+// ROUTES WE WANT TO DISPLAY AFTER LOGING-IN SHOULD GO AFTER THE MIDDLEWARE
+
+
+// Route to render the explore page
+app.get('/explore', (req, res) => {
+  res.render('pages/explore');
+});
+
+
+// Route to handle user logout 
+app.get('/logout', (req, res) => {
+  req.session.destroy(); //destroy user session variables 
+
+  //redirect to the login page
+  res.redirect('pages/login');
+});
 
 
 // *****************************************************
