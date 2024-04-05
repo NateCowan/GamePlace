@@ -1,0 +1,6 @@
+What is our end project going to look like 
+Goals for next meeting:
+- Name of each feature
+- Scope of each feature
+- How we plan to divide feature (mode-form planning)
+

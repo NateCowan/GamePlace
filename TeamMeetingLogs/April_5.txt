@@ -1,0 +1,24 @@
+Try to have all the below features implemented by next meeting
+{
+    Search bar features
+        Use RegEx to search database for games and retrieve necessary information
+
+    API implementation
+        Fill database with game data from api to use for developing/testing application
+
+    Handlebars template for a game page
+        Create a template to display information on any game user clicks
+
+    Nav bar
+        Implement nav bar links and handlebars
+
+    Review writing implementation
+        Handling writing reviews to a game from a user account
+}
+Finalize the database design 
+
+Need overall framework of entire webpage structure
+
+Need a much more solid understanding of what we are doing by next meeting
+
+Decide if we want to dynamically make calls to the IGDB API or load from our database 
