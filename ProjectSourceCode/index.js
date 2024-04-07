@@ -79,9 +79,10 @@ db.connect()
 //                      <Routes>
 // *****************************************************
 
-app.get('/welcome', (req, res) => {
-  res.json({status: 'success', message: 'Welcome!'});
-});
+// Default Route for Test Case
+// app.get('/welcome', (req, res) => {
+//   res.json({status: 'success', message: 'Welcome!'});
+// });
 
 // Re-Direct to Login as Default
 app.get('/', (req, res) => {
@@ -108,10 +109,23 @@ app.post('/register', async (req, res) => {
   try {
       const hash = await bcrypt.hash(req.body.password, 10);
       await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
+      
+      // Need status codes for test cases 
+      // res.status(200).json({
+      //   message: 'Success'
+      // });
+
       res.redirect('/login');
   } catch (error) {
+      // Causes an error message with the test cases
       console.error(error);
       console.log("REGISTER NOT WORKING")
+
+      // Need status codes for test cases
+      // res.status(400).json({
+      //   message: 'Invalid input'
+      // });
+
       res.redirect('/register');
   }
 });
@@ -127,7 +141,8 @@ app.post('/login', async (req, res) => {
 
       // If the user is not found in the table, redirect to GET /register route
       if (!user) {
-          return res.redirect('/register');
+        // res.status(400).send({message: 'User not found'});
+        return res.redirect('/register');
       }
 
       // Use bcrypt.compare to encrypt the password entered from the user and compare if the entered password is the same as the registered one
@@ -144,6 +159,10 @@ app.post('/login', async (req, res) => {
 
       // If the user is found, redirect to /discover route after setting the session
       res.redirect('/explore');
+
+      // res.status(200).json({
+      //   message: 'Success'
+      // });
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
