@@ -1,0 +1,16 @@
+1.
+For the first test, the user will enter a username and password into the proper register page text boxes.
+To test correctness, the user will then attempt to log in using this username and password, and will successfully load the explore page with their username.
+
+2.
+
+
+3.
+
+
+
+The test plans should include specific test cases (user acceptance test cases) that describe the data and the user activity that will be executed in order to verify proper functionality of the feature.
+The test plans should include a description of the test data that will be used to test the feature.
+The test plans should include a description of the test environment ( localhost / cloud ) that will be used to test the feature.
+The test plans should include a description of the test results that will be used to test the feature.
+The test plan should include information about the user acceptance testers.
