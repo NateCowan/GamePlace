@@ -142,7 +142,7 @@ app.post('/login', async (req, res) => {
       // If the user is not found in the table, redirect to GET /register route
       if (!user) {
         // res.status(400).send({message: 'User not found'});
-        return res.redirect('/register');
+        return res.render('pages/login', { message: 'Incorrect username or password.' });
       }
 
       // Use bcrypt.compare to encrypt the password entered from the user and compare if the entered password is the same as the registered one
