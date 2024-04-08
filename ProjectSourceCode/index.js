@@ -194,6 +194,12 @@ app.get('/explore', (req, res) => {
   res.render('pages/explore');
 });
 
+//Route to render selected game page
+
+//The below script will render the game html when called
+/* app.get('/game', (req,res) => {
+  res.render('pages/game', {game_title: title,cover:cover,artworks:artworks,summary:summary,genre:genre,platform:platform}) //Need to change these values to be the values of the selected game
+}); */
 
 // Route to handle user logout 
 app.get('/logout', (req, res) => {
