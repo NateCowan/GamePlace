@@ -196,6 +196,43 @@ app.get('/explore', (req, res) => {
   res.render('pages/explore');
 });
 
+
+//Route to search and send results
+app.post('/search', (req, res) => {
+  // .toLowerCase();
+  // For now, its case sensitive
+  const searchStr = req.body.search;
+  var query = `SELECT * FROM game_data WHERE name = $1;`;
+
+  db.query(query,[searchStr])
+  .then(data => {
+    console.log(data);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+// figure out how to render results with the returned data
+});
+
+//Filter by genre dropdown and send results
+app.post('/filter', (req, res) => {
+  var query = `SELECT * FROM game_data 
+  JOIN game_to_genres ON game_data.game_id = game_to_genres.game_id
+  JOIN game_genres ON game_to_genres.genre_id = game_genres.genre_id
+  WHERE game_genres.genre = $1`;
+
+  db.query(query,[req.body.filter.value])
+  .then(data => {
+    console.log(req.body.filter.value);
+    console.log(data);
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
+});
+
+
 //Route to render selected game page
 
 //The below script will render the game html when called
