@@ -148,21 +148,23 @@ app.post('/login', async (req, res) => {
       // Use bcrypt.compare to encrypt the password entered from the user and compare if the entered password is the same as the registered one
       const match = await bcrypt.compare(req.body.password, user.password);
 
-      // If the password is incorrect, render the login page and send a message to the user stating "Incorrect username or password."
-      if (!match) {
-          return res.render('login', { message: 'Incorrect username or password.' });
+      // If the password is correct, redirect to explore page.
+      if (match)
+      {
+        // Save the user in the session variable
+        req.session.user = user;
+        req.session.save();
+
+        res.redirect('/explore');
+
+        // res.status(200).json({
+        //   message: 'Success'
+        // });
       }
-
-      // Save the user in the session variable
-      req.session.user = user;
-      req.session.save();
-
-      // If the user is found, redirect to /discover route after setting the session
-      res.redirect('/explore');
-
-      // res.status(200).json({
-      //   message: 'Success'
-      // });
+      // If password is incorrect, reload page and send message to user
+      else {
+        res.render('pages/login', { message: 'Incorrect username or password.' });
+      }
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');

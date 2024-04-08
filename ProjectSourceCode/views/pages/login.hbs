@@ -65,6 +65,13 @@
 </head>
 
 <body>
+  {{#if message}}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                alert("{{message}}");
+            });
+        </script>
+  {{/if}}
 
   <div class="the-text">Login!</div>
 
