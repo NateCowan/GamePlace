@@ -30,6 +30,16 @@
         <!-- Table of Descriptors -->
         <table>
                 <tr>
+                    <td>Developers</td>
+                    {{#each developers}}
+                    <td>{{this.name}}</td>
+                    {{/each}}
+                </tr>
+                <tr>
+                    <td>Released</td>
+                    <td>{{date}}</td>
+                </tr>
+                <tr>
                     <td>Genres</td>
                     {{#each genre}}
                     <td>{{this.name}}</td>
