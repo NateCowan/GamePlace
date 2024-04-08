@@ -75,7 +75,7 @@ describe('Testing register API', () => {
 });
 
 describe('Testing Redirect', () => {
-  // Sample test case given to test /test endpoint.
+  // test case given to test /test endpoint.
   it('\login route should redirect to /login with 302 HTTP status code', done => {
     chai
       .request(server)
@@ -89,7 +89,7 @@ describe('Testing Redirect', () => {
 });
 
 describe('Testing Render', () => {
-  // Sample test case given to test /test endpoint.
+  // Test case given to test /test endpoint.
   it('test "/login" route should render with an html response', done => {
     chai
       .request(server)
