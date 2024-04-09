@@ -237,7 +237,24 @@ app.post('/filter', (req, res) => {
 
 //The below script will render the game html when called
 /* app.get('/game', (req,res) => {
-  res.render('pages/game', {game_title: title,cover:cover,artworks:artworks,summary:summary,genre:genre,platform:platform}) //Need to change these values to be the values of the selected game
+  res.render('pages/game', {
+    game_title: title,
+    cover:cover,
+    artworks:artworks,
+    summary:summary,
+    genre:genre,
+    platform:platform,
+    developers:developers,
+    date:date,
+    rating:rating,
+    username:username,
+    reviews:reviews
+  }) //Need to change these values to be the values of the selected game
+}); */
+
+//Route to add reviews for games
+/* app.post('/game', (req,res) => {
+
 }); */
 
 // Route to handle user logout 
