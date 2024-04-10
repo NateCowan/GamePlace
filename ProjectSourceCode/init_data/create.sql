@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users(
 CREATE TABLE IF NOT EXISTS reviews(
     review_id SERIAL PRIMARY KEY,
     username VARCHAR(50),
-    review_text VARCHAR(150) NOT NULL,
+    review_text VARCHAR(280) NOT NULL,
     rating INT NOT NULL,
     game_title VARCHAR(50)
 );
