@@ -267,7 +267,30 @@ app.post('/filter', (req, res) => {
 //Route to add reviews for games
 app.post('/game', (req,res) => {
   const query =
-  `insert into reviews (username, review_text, rating, game_title) values ('${req.body.username}', '${req.body.review}','${req.body.rating}',${req.body.game_title})  returning *;`;
+  `insert into reviews (username, review_text, rating, game_title) values ($1, $2, $3, $4)  returning *;`;
+  db.task('get-everything', task => {
+    return task.batch([task.any(query1, [
+      req.body.username,
+      req.body.review_text,
+      req.body.rating,
+      req.body.game_title,
+    ])
+  ]);
+  })
+    // if query execution succeeds
+    // send success message
+    .then(function (data) {
+      res.status(201).json({
+        status: 'success',
+        data: data[0][0].review_id,
+        message: 'data added successfully',
+      });
+    })
+    // if query execution fails
+    // send error message
+    .catch(function (err) {
+      return console.log(err);
+    });
 
 
 }); 
