@@ -11,7 +11,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part C.
-const { url } = require('inspector');
 
 
 // *****************************************************
@@ -85,30 +84,38 @@ db.connect()
 //   res.json({status: 'success', message: 'Welcome!'});
 // });
 
+// ******************
+//   Page Rendering
+// ******************
+
 // Re-Direct to Login as Default
-// app.get('/', (req, res) => {
-//   res.redirect('/login'); // Redirect to the /login route
-// });
+app.get('/', (req, res) => {
+  res.redirect('/login'); // Redirect to the /login route
+});
 
+// Route to render the login page
+app.get('/login', (req, res) => {
+  res.render('pages/login');
+});
 
-// // Route to render the login page
-// app.get('/login', (req, res) => {
-//   res.render('pages/login');
-// });
-
-// // Route to render the registration page
-// app.get('/register', (req, res) => {
-//   res.render('pages/register');
-// });
+// Route to render the registration page
+app.get('/register', (req, res) => {
+  res.render('pages/register');
+});
 
 // Route to render the game page
 app.get('/game', (req, res) => {
   res.render('pages/game');
-})
+});
 
+// Route to render the explore page
+app.get('/explore', (req, res) => {
+  res.render('pages/explore');
+});
 
-
-
+// ********************
+//  Registration/Login
+// ********************
 
 // Handle user registration
 app.post('/register', async (req, res) => {
@@ -135,9 +142,6 @@ app.post('/register', async (req, res) => {
       res.redirect('/register');
   }
 });
-
-
-
 
 // Route to handle user login
 app.post('/login', async (req, res) => {
@@ -177,12 +181,9 @@ app.post('/login', async (req, res) => {
   }
 });
 
-
-
 // Authentication Middleware.
 const auth = (req, res, next) => {
-
-  if (!req.session.user ) {
+  if (!req.session.user) {
     // Default to login page.
     return res.redirect('/login');
   }
@@ -196,13 +197,9 @@ app.use(auth);
 
 
 // ROUTES WE WANT TO DISPLAY AFTER LOGING-IN SHOULD GO AFTER THE MIDDLEWARE
-
-
-// Route to render the explore page
-app.get('/explore', (req, res) => {
-  res.render('pages/explore');
-});
-
+// **********
+//   Search
+// **********
 
 //Route to search and send results
 app.post('/search', (req, res) => {
@@ -273,84 +270,9 @@ app.get('/logout', (req, res) => {
 });
 
 
-
-// *****************************************************
-//                   <API Routes>
-// *****************************************************
-
-
-//const axios = require('axios');
-
-// app.get('/xxx', async (req, res) => {
-//   axios({
-//     url: `https://api.igdb.com/v4/genres`,
-//     method: `GET`,
-//     dataType: `json`,
-//     headers: {
-//       'Accept': 'application/json',
-//       'Client-ID': process.env.client_id,
-//       'Authorization': process.env.access_token,
-//     }
-//   }).then(res => {
-//     res.json(res.data);
-//     res.status(200);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
-
-// });
-
-app.get('/get_genre', async (req, res) => {
-  try {
-    const response = await axios({
-   
-      url: `https://api.igdb.com/v4/genres`,
-      method: `POST`,
-      dataType: `json`,
-      headers: {
-        'Accept': 'application/json',
-        'Client-ID': process.env.client_id,
-        'Authorization': process.env.access_token,
-      },
-      data: "fields checksum,created_at,name,slug,updated_at,url;"
-    });
-    
-    // Send the JSON data back to the client
-    res.json(response.data);
-  } catch (err) {
-    console.error(err);
-    // Send an error response if something goes wrong
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // *****************************************************
 //                   <Start Server>
 // *****************************************************
 // app.listen(3000);
 module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
-
-
-
-
-
-
-
