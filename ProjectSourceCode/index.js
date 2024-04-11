@@ -303,6 +303,35 @@ app.get('/logout', (req, res) => {
   res.redirect('pages/login');
 });
 
+app.get('/xxx', async (req, res) => {
+  try {
+    const response = await axios({
+      url: `https://api.igdb.com/v4/genres`,
+      method: `POST`,
+      dataType: `json`,
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.client_id,
+        'Authorization': process.env.access_token,
+      },
+      data: "fields checksum,created_at,name,slug,updated_at,url;"
+    });
+
+    // Send the JSON data back to the client
+    res.json(response.data);
+  } catch (err) {
+    console.error(err);
+    // Send an error response if something goes wrong
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
 
 // *****************************************************
 //                   <Start Server>
