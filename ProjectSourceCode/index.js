@@ -191,7 +191,7 @@ app.post('/login', async (req, res) => {
 
 // Authentication Middleware.
 const auth = (req, res, next) => {
-  if (!req.session.user) {
+  if (!req.session.user ) {
     // Default to login page.
     return res.redirect('/login');
   }
@@ -199,7 +199,7 @@ const auth = (req, res, next) => {
 };
 
 // Authentication Required
-app.use(auth);
+//app.use(auth); //RECOMMENT THIS LINE
 
 
 
@@ -225,6 +225,12 @@ app.post('/search', (req, res) => {
   });
 // figure out how to render results with the returned data
 });
+
+
+
+
+
+
 
 //Filter by genre dropdown and send results
 app.post('/filter', (req, res) => {
@@ -303,20 +309,47 @@ app.get('/logout', (req, res) => {
   res.redirect('pages/login');
 });
 
-app.get('/get_genre', async (req, res) => {
+
+//We may not need this endpoint? But it is a good prototype of what an endpoint with this api look like. 
+// app.get('/get_genre', async (req, res) => {
+//   try {
+//     const response = await axios({
+//       url: `https://api.igdb.com/v4/genres`,
+//       method: `POST`,
+//       dataType: `json`,
+//       headers: {
+//         'Accept': 'application/json',
+//         'Client-ID': process.env.client_id,
+//         'Authorization': process.env.access_token,
+//       },
+//       data: "fields checksum,created_at,name,slug,updated_at,url;"
+//     });
+
+//     // Send the JSON data back to the client
+//     res.json(response.data);
+//   } catch (err) {
+//     console.error(err);
+//     // Send an error response if something goes wrong
+//     res.status(500).json({ error: 'Internal Server Error, Bearer ${process.env.access_token}' });
+//   }
+// });
+
+
+
+
+app.get('/games', async (req, res) => {
   try {
     const response = await axios({
-      url: `https://api.igdb.com/v4/genres`,
+      url: `https://api.igdb.com/v4/games`,
       method: `POST`,
-      dataType: `json`,
       headers: {
         'Accept': 'application/json',
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      data: "fields checksum,created_at,name,slug,updated_at,url;"
+      data: "fields name,genres.name;"
     });
-
+    
     // Send the JSON data back to the client
     res.json(response.data);
   } catch (err) {
@@ -325,6 +358,25 @@ app.get('/get_genre', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
