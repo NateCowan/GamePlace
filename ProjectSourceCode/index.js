@@ -101,6 +101,10 @@ db.connect()
 //   res.render('pages/register');
 // });
 
+// Route to render the game page
+app.get('/game', (req, res) => {
+  res.render('pages/game');
+})
 
 
 
