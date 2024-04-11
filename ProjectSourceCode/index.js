@@ -303,7 +303,7 @@ app.get('/logout', (req, res) => {
   res.redirect('pages/login');
 });
 
-app.get('/xxx', async (req, res) => {
+app.get('/get_genre', async (req, res) => {
   try {
     const response = await axios({
       url: `https://api.igdb.com/v4/genres`,
