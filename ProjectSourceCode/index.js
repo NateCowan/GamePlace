@@ -199,7 +199,7 @@ const auth = (req, res, next) => {
 };
 
 // Authentication Required
-//app.use(auth); //RECOMMENT THIS LINE
+app.use(auth); //RECOMMENT THIS LINE
 
 
 
