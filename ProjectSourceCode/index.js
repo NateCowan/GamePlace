@@ -257,9 +257,12 @@ app.post('/filter', (req, res) => {
 }); */
 
 //Route to add reviews for games
-/* app.post('/game', (req,res) => {
+app.post('/game', (req,res) => {
+  const query =
+  `insert into reviews (username, review_text, rating, game_title) values ('${req.body.username}', '${req.body.review}','${req.body.rating}',${req.body.game_title})  returning *;`;
 
-}); */
+
+}); 
 
 // Route to handle user logout 
 app.get('/logout', (req, res) => {
