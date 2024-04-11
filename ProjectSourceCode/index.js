@@ -182,8 +182,7 @@ app.post('/login', async (req, res) => {
 // Authentication Middleware.
 const auth = (req, res, next) => {
 
-
-  if (!req.session.user && !(req.path == "/xxx")) {
+  if (!req.session.user ) {
     // Default to login page.
     return res.redirect('/login');
   }
@@ -302,9 +301,10 @@ app.get('/logout', (req, res) => {
 
 // });
 
-app.get('/xxx', async (req, res) => {
+app.get('/get_genre', async (req, res) => {
   try {
     const response = await axios({
+   
       url: `https://api.igdb.com/v4/genres`,
       method: `POST`,
       dataType: `json`,
@@ -312,7 +312,8 @@ app.get('/xxx', async (req, res) => {
         'Accept': 'application/json',
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
-      }
+      },
+      data: "fields checksum,created_at,name,slug,updated_at,url;"
     });
     
     // Send the JSON data back to the client
