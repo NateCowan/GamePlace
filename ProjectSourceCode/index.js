@@ -120,6 +120,14 @@ app.get('/explore', (req, res) => {
 // Handle user registration
 app.post('/register', async (req, res) => {
   try {
+      // Check if the username already exists
+      const existingUser = await db.oneOrNone('SELECT * FROM users WHERE username = $1', [req.body.username]);
+      if (existingUser) {
+        // Username already exists, send an error
+        // return res.status(400).json({ message: 'Username already exists' });
+        return res.render('pages/register', { message: 'User already exists.' });
+      }
+
       const hash = await bcrypt.hash(req.body.password, 10);
       await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
       
