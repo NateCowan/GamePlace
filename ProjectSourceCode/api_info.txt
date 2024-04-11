@@ -1,0 +1,3 @@
+Client id: 43ckhrqseqkcrmm44f0x48j4c1i3jn
+Client Secret: uexi6x6x7uwccbwhgg60xp74y4hm90
+Acesses Token: 55xv39b6itqz2ogmcg9a1ukm1wdz3p

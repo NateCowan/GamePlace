@@ -52,8 +52,9 @@ CREATE TABLE IF NOT EXISTS game_to_genres(
 
 
 
--- Create a user for testing ---> testUser password is 'test'
+-- -- Create a user for testing ---> testUser password is 'test'
 insert into users (username, password) values ('testUser', '$2a$04$nisAeVLmVfS6oezJ35eBQeZcDtB2eCMR1rZHzMGdz9cvhOLYNR2na');
+insert into users (username, password) values ('x', '$2y$10$HbdbQsrcj6qfn0R2CZYdmujsaZeRLrQFWwhQ3ZylPVl/s9vR65DJe');
 
 -- Add fake reviews for testing
 insert into reviews (username, review) values ('testUser','The game was good');
