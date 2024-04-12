@@ -57,9 +57,16 @@ insert into users (username, password) values ('testUser', '$2a$04$nisAeVLmVfS6o
 insert into users (username, password) values ('x', '$2y$10$HbdbQsrcj6qfn0R2CZYdmujsaZeRLrQFWwhQ3ZylPVl/s9vR65DJe');
 
 -- Add fake reviews for testing
-insert into reviews (username, review) values ('testUser','The game was good');
-insert into reviews (username, review) values ('testUser','It could use some more features');
-insert into reviews (username, review) values ('testUser','Could use some more explosions');
+--CREATE TABLE IF NOT EXISTS reviews(
+--    review_id SERIAL PRIMARY KEY,
+--    username VARCHAR(50),
+--    review_text VARCHAR(280) NOT NULL,
+--    rating INT NOT NULL,
+--    game_title VARCHAR(50)
+--);
+insert into reviews (username, review_text,rating,game_title) values ('testUser','The game was good',3,'The Legend of Zelda: A Link to the Past');
+insert into reviews (username, review_text,rating,game_title) values ('testUser','It could use some more features',2,'The Legend of Zelda: A Link to the Past');
+insert into reviews (username, review_text,rating,game_title) values ('testUser','Could use some more explosions',1,'The Legend of Zelda: A Link to the Past');
 
 -- Add a few games for testing
 insert into game_data (name, summary, release_date, total_rating, cover_url) values (
