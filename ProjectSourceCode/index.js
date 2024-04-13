@@ -12,10 +12,10 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part C.
 
-
 // *****************************************************
 //                 <App Settings>
 // *****************************************************
+
 
 // create `ExpressHandlebars` instance and configure the layouts and partials dir.
 const hbs = handlebars.create({
@@ -46,6 +46,7 @@ app.use(
   })
 );
 
+// app.use(express.static(path.join(__dirname,'resources')));
 
 // *****************************************************
 //                 <Connect to DB>
@@ -234,20 +235,22 @@ app.post('/search', (req, res) => {
 
 //Filter by genre dropdown and send results
 app.post('/filter', (req, res) => {
+  console.log(req.body.genre);
+
   var query = `SELECT * FROM game_data 
   JOIN game_to_genres ON game_data.game_id = game_to_genres.game_id
   JOIN game_genres ON game_to_genres.genre_id = game_genres.genre_id
   WHERE game_genres.genre = $1`;
 
-  db.query(query,[req.body.filter.value])
+  db.query(query,[req.body.genre])
   .then(data => {
-    console.log(req.body.filter.value);
     console.log(data);
   })
   .catch(err => {
     console.log(err);
   });
 
+  res.json({message: 'End of route'});
 });
 
 
