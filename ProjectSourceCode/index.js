@@ -104,11 +104,6 @@ app.get('/register', (req, res) => {
   res.render('pages/register');
 });
 
-// Route to render the game page
-app.get('/game', (req, res) => {
-  res.render('pages/game');
-});
-
 // Route to render the explore page
 app.get('/explore', (req, res) => {
   res.render('pages/explore');
@@ -254,25 +249,6 @@ app.post('/filter', (req, res) => {
 });
 
 
-//Route to render selected game page
-
-//The below script will render the game html when called
-/* app.get('/game', (req,res) => {
-  res.render('pages/game', {
-    game_title: title,
-    cover:cover,
-    artworks:artworks,
-    summary:summary,
-    genre:genre,
-    platform:platform,
-    developers:developers,
-    date:date,
-    rating:rating,
-    username:username,
-    reviews:reviews
-  }) //Need to change these values to be the values of the selected game
-}); */
-
 //Route to add reviews for games
 app.post('/game', (req,res) => {
   const query =
@@ -338,34 +314,79 @@ app.get('/logout', (req, res) => {
 // });
 
 
+//Route to render selected game page
 
+//The below script will render the game html when called
+/* app.get('/game', (req,res) => {
+  res.render('pages/game', {
+    game_title: title,
+    cover:cover,
+    artworks:artworks,
+    summary:summary,
+    genre:genre,
+    platform:platform,
+    developers:developers,
+    date:date,
+    rating:rating,
+    username:username,
+    reviews:reviews
+  }) //Need to change these values to be the values of the selected game
+}); */
 
-app.get('/games', async (req, res) => {
+app.get('/game', async (req, res) => {
   try {
-    const response = await axios({
-      url: `https://api.igdb.com/v4/games`,
-      method: `POST`,
+    const response = await fetch('https://api.igdb.com/v4/games', {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      data: "fields name,genres.name;"
+      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,first_release_date; where name = "Halo 5: Guardians";'
     });
     
-    // Send the JSON data back to the client
-    res.json(response.data);
-  } catch (err) {
-    console.error(err);
-    // Send an error response if something goes wrong
+    if (!response.ok) {
+      throw new Error('Failed to fetch data from IGDB');
+    }
+
+    const data = await response.json();
+    console.log(data); // Log the data
+    
+    const reviews = [];
+    let rating = 0;
+
+    try {
+      //reviews = await db.query('SELECT * FROM reviews WHERE game_title = "Halo 5: Guardians"');
+      //rating = await db.query('SELECT AVG(rating) FROM reviews WHERE game_title = "Halo 5: Guardians"');
+    }
+    catch (error)
+    {
+      console.error("Error fetching review data:", error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+    const gameData=data[0];
+    let n = gameData.involved_companies.length
+    const myDate = new Date(gameData.first_release_date*1000)
+    console.log(gameData.involved_companies.company)
+    console.log(gameData.artworks[0])
+    res.render('pages/game', {
+      game_title: gameData.name,
+      cover: gameData.cover.url,
+      artworks: gameData.artworks,
+      summary: gameData.summary,
+      genre: gameData.genres,
+      platform: gameData.platforms,
+      developers: gameData.involved_companies.company,
+      date: myDate.toDateString(),
+      rating: rating,
+      username: req.session.user.username,
+      reviews: reviews
+    });
+  } catch (error) {
+    console.error("Error fetching game data:", error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
-
-
-
 
 
 
