@@ -1,0 +1,3 @@
+Community group feature, a space to publish a message for others to see
+Add a like feature, be able to like a game and save it to your profile 
+Update release notes
