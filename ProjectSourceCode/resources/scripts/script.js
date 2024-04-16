@@ -1,4 +1,3 @@
-console.log('balls');
 document.addEventListener('DOMContentLoaded', () => {
     // get filter dropdown
     const filter = document.querySelector("#FILTER");
