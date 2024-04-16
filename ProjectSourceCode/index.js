@@ -75,7 +75,6 @@ db.connect()
 });
   
 
-
 // *****************************************************
 //                      <Routes>
 // *****************************************************
@@ -279,6 +278,16 @@ app.post('/game', (req,res) => {
 
 
 }); 
+
+
+app.get('/account', (req,res) => {
+  res.render('pages/account',{
+    username: user.username
+  });
+});
+
+
+
 
 // Route to handle user logout 
 app.get('/logout', (req, res) => {
