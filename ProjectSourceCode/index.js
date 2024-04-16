@@ -364,8 +364,11 @@ app.get('/game', async (req, res) => {
     const gameData=data[0];
     let n = gameData.involved_companies.length
     const myDate = new Date(gameData.first_release_date*1000)
-    console.log(gameData.involved_companies.company)
-    console.log(gameData.artworks[0])
+    const companies = new Array(n);
+    for(let i = 0;i<n;i++)
+    {
+      companies.push(gameData.involved_companies[i].company.name)
+    }
     res.render('pages/game', {
       game_title: gameData.name,
       cover: gameData.cover.url,
@@ -373,7 +376,7 @@ app.get('/game', async (req, res) => {
       summary: gameData.summary,
       genre: gameData.genres,
       platform: gameData.platforms,
-      developers: gameData.involved_companies.company,
+      developers: companies,
       date: myDate.toDateString(),
       rating: rating,
       username: req.session.user.username,
