@@ -339,7 +339,7 @@ app.get('/game', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,first_release_date; where name = "Halo 5: Guardians";'
+      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Halo 5: Guardians";'
     });
     
     if (!response.ok) {
@@ -378,6 +378,7 @@ app.get('/game', async (req, res) => {
       platform: gameData.platforms,
       developers: companies,
       date: myDate.toDateString(),
+      screenshots: gameData.screenshots,
       rating: rating,
       username: req.session.user.username,
       reviews: reviews
