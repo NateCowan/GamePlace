@@ -108,6 +108,12 @@ app.get('/explore', (req, res) => {
   res.render('pages/explore');
 });
 
+
+app.get('/account', (req, res) => {
+  res.render('pages/account');
+});
+
+
 // ********************
 //  Registration/Login
 // ********************
@@ -280,11 +286,10 @@ app.post('/game', (req,res) => {
 }); 
 
 
-app.get('/account', (req,res) => {
-  res.render('pages/account',{
-    username: user.username
-  });
+app.get('/account', (req, res) => { 
+  res.render('pages/account');
 });
+
 
 
 
