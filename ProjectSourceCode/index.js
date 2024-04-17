@@ -154,7 +154,7 @@ app.post('/register', async (req, res) => {
       //   message: 'Invalid input'
       // });
 
-      res.redirect('/register');
+      res.redirect('/register',{message: err.message});
   }
 });
 
@@ -297,12 +297,11 @@ app.post('/game', async (req, res) => {
     let rating = 0;
     try {
       reviews = await db.query(`SELECT * FROM reviews WHERE game_title = '${req.body.game_title}'`);
-      rating = await db.query(`SELECT AVG(rating) FROM reviews WHERE game_title = '${req.body.game_title}'`);
+      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = '${req.body.game_title}'`);
     } catch (error) {
       console.error("Error fetching review data:", error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-
     // Render the game page with data
     res.render('pages/game', {
       game_title: gameData.name,
@@ -314,24 +313,17 @@ app.post('/game', async (req, res) => {
       developers: gameData.involved_companies.map(company => company.company.name),
       date: new Date(gameData.first_release_date * 1000).toDateString(),
       screenshots: gameData.screenshots,
-      rating: rating,
+      rating: rating[0].round,
       username: req.session.user.username,
-      reviews: reviews
+      reviews: reviews,
+      message: `Thank you for reviewing ${gameData.name}!`
     });
   } catch (error) {
     console.error("Error processing game data:", error);
     res.status(500).json({ error: 'Internal Server Error' });
+    res.render('pages/register',{message:err.message})
   }
 });
-
-
-
-app.get('/account', (req, res) => { 
-  res.render('pages/account');
-});
-
-
-
 
 
 // Route to handle user logout 
@@ -339,7 +331,7 @@ app.get('/logout', (req, res) => {
   req.session.destroy(); //destroy user session variables 
 
   //redirect to the login page
-  res.redirect('pages/login');
+  res.render('pages/login', { message: 'Logged out successfully.' });
 });
 
 
@@ -394,12 +386,16 @@ app.get('/game', async (req, res) => {
 
     try {
       reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-      rating = await db.query(`SELECT AVG(rating) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
+      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
     }
     catch (error)
     {
       console.error("Error fetching review data:", error);
       res.status(500).json({ error: 'Internal Server Error' });
+    }
+    if(rating[0].round==null)
+    {
+      rating[0].round=0
     }
     const gameData=data[0];
     let n = gameData.involved_companies.length
@@ -419,7 +415,7 @@ app.get('/game', async (req, res) => {
       developers: companies,
       date: myDate.toDateString(),
       screenshots: gameData.screenshots,
-      rating: rating,
+      rating: rating[0].round,
       username: req.session.user.username,
       reviews: reviews
     });
