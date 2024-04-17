@@ -255,35 +255,69 @@ app.post('/filter', (req, res) => {
 
 
 //Route to add reviews for games
-app.post('/game', (req,res) => {
-  const query =
-  `insert into reviews (username, review_text, rating, game_title) values ($1, $2, $3, $4)  returning *;`;
-  db.task('get-everything', task => {
-    return task.batch([task.any(query1, [
-      req.body.username,
-      req.body.review_text,
-      req.body.rating,
-      req.body.game_title,
-    ])
-  ]);
-  })
-    // if query execution succeeds
-    // send success message
-    .then(function (data) {
-      res.status(201).json({
-        status: 'success',
-        data: data[0][0].review_id,
-        message: 'data added successfully',
-      });
-    })
-    // if query execution fails
-    // send error message
-    .catch(function (err) {
-      return console.log(err);
+app.post('/game', async (req, res) => {
+  try {
+    const query =
+      `insert into reviews (username, review_text, rating, game_title) values ($1, $2, $3, $4)  returning *;`;
+    const data = await db.task('get-everything', task => {
+      return task.batch([task.any(query, [
+        req.body.username,
+        req.body.review_text,
+        req.body.rating,
+        req.body.game_title,
+      ])]);
     });
 
+    // Fetch game data
+    const response = await fetch('https://api.igdb.com/v4/games', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.client_id,
+        'Authorization': process.env.access_token,
+      },
+      body: `fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "${req.body.game_title}";`
+    });
 
-}); 
+    if (!response.ok) {
+      throw new Error('Failed to fetch data from IGDB');
+    }
+
+    const rawData = await response.json();
+    console.log(rawData); // Log the game data
+    const gameData = rawData[0];
+    // Fetch reviews and rating
+    let reviews = [];
+    let rating = 0;
+    try {
+      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = '${req.body.game_title}'`);
+      rating = await db.query(`SELECT AVG(rating) FROM reviews WHERE game_title = '${req.body.game_title}'`);
+    } catch (error) {
+      console.error("Error fetching review data:", error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    // Render the game page with data
+    res.render('pages/game', {
+      game_title: gameData.name,
+      cover: gameData.cover.url,
+      artworks: gameData.artworks,
+      summary: gameData.summary,
+      genre: gameData.genres,
+      platform: gameData.platforms,
+      developers: gameData.involved_companies.map(company => company.company.name),
+      date: new Date(gameData.first_release_date * 1000).toDateString(),
+      screenshots: gameData.screenshots,
+      rating: rating,
+      username: req.session.user.username,
+      reviews: reviews
+    });
+  } catch (error) {
+    console.error("Error processing game data:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 app.get('/account', (req, res) => { 
@@ -330,23 +364,6 @@ app.get('/logout', (req, res) => {
 
 //Route to render selected game page
 
-//The below script will render the game html when called
-/* app.get('/game', (req,res) => {
-  res.render('pages/game', {
-    game_title: title,
-    cover:cover,
-    artworks:artworks,
-    summary:summary,
-    genre:genre,
-    platform:platform,
-    developers:developers,
-    date:date,
-    rating:rating,
-    username:username,
-    reviews:reviews
-  }) //Need to change these values to be the values of the selected game
-}); */
-
 app.get('/game', async (req, res) => {
   try {
     const response = await fetch('https://api.igdb.com/v4/games', {
@@ -366,12 +383,12 @@ app.get('/game', async (req, res) => {
     const data = await response.json();
     console.log(data); // Log the data
     
-    const reviews = [];
+    let reviews = [];
     let rating = 0;
 
     try {
-      //reviews = await db.query('SELECT * FROM reviews WHERE game_title = "Halo 5: Guardians"');
-      //rating = await db.query('SELECT AVG(rating) FROM reviews WHERE game_title = "Halo 5: Guardians"');
+      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
+      rating = await db.query(`SELECT AVG(rating) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
     }
     catch (error)
     {
