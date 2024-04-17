@@ -382,39 +382,30 @@ app.get('/game', async (req, res) => {
     console.log(data); // Log the data
     
     let reviews = [];
-    let rating = 0;
-
+    let rating_to_send = 0;
+ 
     try {
-      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-    }
-    catch (error)
-    {
-      console.log('Failed to fetch data')
-      rating = 0;
+      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = $1`, ['Halo 5: Guardians']);
+      const ratingResult = await db.query(`SELECT ROUND(AVG(rating), 2) AS avg_rating FROM reviews WHERE game_title = $1`, ['Halo 5: Guardians']);
+
+      if (ratingResult.length > 0 && ratingResult[0].avg_rating !== null) {
+        rating_to_send = ratingResult[0].avg_rating;
+      }
+    } catch (error) {
+      console.error('Failed to fetch review data:', error);
+      rating_to_send = 0;
       reviews = [];
     }
-    let rating_to_send = 0
-    if(rating==0)
-    {
-      rating_to_send=0
-    }
-    else if(rating[0].round==null)
-    {
-      rating_to_send=0
-    }
-    else
-    {
-      rating_to_send = rating[0].round
-    }
-    const gameData=data[0];
-    let n = gameData.involved_companies.length
-    const myDate = new Date(gameData.first_release_date*1000)
+
+    const gameData = data[0];
+    const n = gameData.involved_companies.length;
+    const myDate = new Date(gameData.first_release_date * 1000);
     const companies = new Array(n);
-    for(let i = 0;i<n;i++)
-    {
-      companies.push(gameData.involved_companies[i].company.name)
+
+    for (let i = 0; i < n; i++) {
+      companies.push(gameData.involved_companies[i].company.name);
     }
+
     res.render('pages/game', {
       game_title: gameData.name,
       cover: gameData.cover.url,
