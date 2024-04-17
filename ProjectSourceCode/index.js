@@ -390,12 +390,22 @@ app.get('/game', async (req, res) => {
     }
     catch (error)
     {
-      console.error("Error fetching review data:", error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.log('Failed to fetch data')
+      rating = 0;
+      reviews = [];
     }
-    if(rating[0].round==null)
+    let rating_to_send = 0
+    if(rating==0)
     {
-      rating[0].round=0
+      rating_to_send=0
+    }
+    else if(rating[0].round==null)
+    {
+      rating_to_send=0
+    }
+    else
+    {
+      rating_to_send = rating[0].round
     }
     const gameData=data[0];
     let n = gameData.involved_companies.length
@@ -415,7 +425,7 @@ app.get('/game', async (req, res) => {
       developers: companies,
       date: myDate.toDateString(),
       screenshots: gameData.screenshots,
-      rating: rating[0].round,
+      rating: rating_to_send,
       username: req.session.user.username,
       reviews: reviews
     });
