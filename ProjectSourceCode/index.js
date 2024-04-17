@@ -427,7 +427,28 @@ app.get('/game', async (req, res) => {
 });
 
 
+app.post('/follow', async (req, res) => {
+  try {
+    const { userId, gameId, action } = req.body;
 
+    // Perform authentication check here
+    
+    if (action === 'follow') {
+      // Add a record to the database to indicate that the user is following the game
+      await db.query('INSERT INTO user_game_followers (user_id, game_id) VALUES ($1, $2)', [userId, gameId]);
+      res.json({ success: true, message: 'Game followed successfully' });
+    } else if (action === 'unfollow') {
+      // Remove the record from the database to indicate that the user is no longer following the game
+      await db.query('DELETE FROM user_game_followers WHERE user_id = $1 AND game_id = $2', [userId, gameId]);
+      res.json({ success: true, message: 'Game unfollowed successfully' });
+    } else {
+      res.status(400).json({ success: false, message: 'Invalid action' });
+    }
+  } catch (error) {
+    console.error('Error handling follow/unfollow action:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
 
 
 
