@@ -110,7 +110,12 @@ app.get('/explore', (req, res) => {
 
 
 app.get('/account', (req, res) => {
-  res.render('pages/account');
+  if (req.session.user) { 
+    res.render('pages/account', { username: req.session.user.username });
+  } else {
+    
+    res.redirect('/login');
+  }
 });
 
 
