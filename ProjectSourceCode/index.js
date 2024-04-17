@@ -154,7 +154,7 @@ app.post('/register', async (req, res) => {
       //   message: 'Invalid input'
       // });
 
-      res.redirect('/register');
+      res.redirect('/register',{message: err.message});
   }
 });
 
@@ -315,11 +315,13 @@ app.post('/game', async (req, res) => {
       screenshots: gameData.screenshots,
       rating: rating[0].round,
       username: req.session.user.username,
-      reviews: reviews
+      reviews: reviews,
+      message: `Thank you for reviewing ${gameData.name}!`
     });
   } catch (error) {
     console.error("Error processing game data:", error);
     res.status(500).json({ error: 'Internal Server Error' });
+    res.render('pages/register',{message:err.message})
   }
 });
 
@@ -329,7 +331,7 @@ app.get('/logout', (req, res) => {
   req.session.destroy(); //destroy user session variables 
 
   //redirect to the login page
-  res.redirect('pages/login');
+  res.render('pages/login', { message: 'Logged out successfully.' });
 });
 
 
