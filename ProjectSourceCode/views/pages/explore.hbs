@@ -1,92 +1,89 @@
 {{>nav}}
 
-<h1 class="p-3">Explore:</h1>
 
-<div class="container d-flex p-2">
-{{!-- SEARCH BAR --}}
-    <div class="search-div" style="flex: 2;">
-        <form action="/search" method="POST" role="search">
-            <input type="search" name="search" id="search-bar" placeholder="search">
-            <button class="btn btn-outline-success" type="submit">search</button>
-        </form>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <style>
+    .custom-btn {
+        background-color: green;
+        border-color: green;
+        position: absolute; /* Position the button absolutely within the container */
+        bottom: 10px; /* Distance from the bottom */
+        right: 10px; /* Distance from the right */
+    }
+
+    .custom-btn:hover {
+        background-color: darkgreen;
+        border-color: darkgreen;
+    }
+    </style>
+    <h1 class="p-3">Explore:</h1>
+
+    <div class="container d-flex p-2">
+    {{!-- SEARCH BAR --}}
+        <div class="search-div" style="flex: 2;">
+            <form action="/search" method="POST" role="search">
+                <input type="search" name="search" id="search-bar" placeholder="search">
+                <button class="btn btn-outline-success" type="submit">search</button>
+            </form>
+        </div>
+
+
+        {{!-- Implement the following request path to get data from the API to display the 
+        genres, https://api.igdb.com/v4/genres --}}
+        <div>
+        {{!-- GENRE DROPDOWN --}}
+            <select id="FILTER" >
+                <option>Filter by Genre</option>
+                {{!-- temporary options until we use the API --}}
+                <option value="action">Action</option>
+                <option value="adventure">Adventure</option>
+                <option value="co-op">Co-Op</option>
+                <option value="etc">etc.</option>
+
+            {{!-- {{#each genre}}
+                <option value=""></option>
+            {{/each}} --}}
+
+            </select>
+        </div>
+
     </div>
 
 
-    {{!-- Implement the following request path to get data from the API to display the 
-    genres, https://api.igdb.com/v4/genres --}}
-    <div>
-    {{!-- GENRE DROPDOWN --}}
-        <select name="filter" id="FILTER" class="form-select form-select-sm">
-            <option selected>Filter by Genre</option>
-            {{!-- temporary options until we use the API --}}
-            <option value="action">Action</option>
-            <option value="adventure">Adventure</option>
-            <option value="co-op">Co-Op</option>
-            <option value="etc">etc.</option>
 
-        {{!-- {{#each genre}}
-            <option value=""></option>
-        {{/each}} --}}
-
-        </select>
-    </div>
-
-</div>
+    {{!-- DISPLAY BOOTSTRAP CARDS FOR GAMES --}}
+    <div class="container d-flex flex-column p-3">
 
 
+        <h4>Popular</h4>
 
-{{!-- DISPLAY BOOTSTRAP CARDS FOR GAMES --}}
-<div class="container d-flex flex-column p-3">
+        <div class="d-flex flex-wrap justify-content-evenly p-1">
 
+        {{!-- temporary cards until we use the API --}}
 
-    <h4>Popular</h4>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="https://t4.ftcdn.net/jpg/01/09/00/83/240_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg" class="card-img-top" alt="Event Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{name}}</h5>
+                    <h3 class="card-text">Reviews: {{dates.start.localDate}}</h3>
 
-    <div class="d-flex flex-wrap justify-content-evenly p-1">
-
-    {{!-- temporary cards until we use the API --}}
-        <div class="card" style="width: 8rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Any quick game info for the user.</p>
-            </div>
-        </div>
-        <div class="card" style="width: 8rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Any quick game info for the user.</p>
-            </div>
-        </div>
-        <div class="card" style="width: 8rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Any quick game info for the user.</p>
-            </div>
-        </div>
-        <div class="card" style="width: 8rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Any quick game info for the user.</p>
-            </div>
-        </div>
-        <div class="card" style="width: 8rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Any quick game info for the user.</p>
-            </div>
-        </div>
-        <div class="card" style="width: 8rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <p class="card-text">Any quick game info for the user.</p>
+                    <p>TO DO: 1) make liked games display on account apge 2) make games render dynamically <p>
+                    <a href="#" class="btn btn-primary custom-btn"><i class="fas fa-thumbs-up"></i> </a>
+                </div>
             </div>
         </div>
 
-        {{!-- {{#each genre}}
-            create card here
-        {{/each}} --}}
+
+
+        </div>
+
+        
 
     </div>
 
-    
-
-</div>
+</body>
