@@ -111,7 +111,8 @@ app.get('/explore', (req, res) => {
 
 app.get('/account', (req, res) => {
   if (req.session.user) { 
-    res.render('pages/account', { username: req.session.user.username });
+    const firstInitial = req.session.user.username.charAt(0).toUpperCase();
+    res.render('pages/account', { username: req.session.user.username, firstInitial: firstInitial });
   } else {
     
     res.redirect('/login');
