@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{game_title}}</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: rgb(185, 145, 196);
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgb(252, 247, 252);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgb(204, 53, 88);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+        }
+
+        /* Form Styles */
+        form {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="submit"] {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgb(124, 124, 124);
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: navy;
+        }
+
+        /* Chat Messages Styles */
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        .message {
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .message .username {
+            font-weight: bold;
+            color: navy;
+        }
+
+        .message .timestamp {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+    </style>
+</head>
+<body>
+    {{>nav}} <!-- Include navigation if needed -->
+
+    <div class="container">
+        <h1>{{game_title}}</h1>
+
+        <br>
+
+        <!-- Chat Messages -->
+        <div class="chat-container">
+            <!-- Example of displaying chat messages dynamically using JavaScript -->
+            <!-- You'll need to implement this functionality using JavaScript -->
+            <!-- Example: -->
+            <!-- <div class="message">
+                <span class="username">User123:</span>
+                <span class="timestamp">April 18, 2024 12:00 PM</span>
+                <p>Hello, how are you?</p>
+            </div> -->
+        </div>
+        <!-- Chat Form -->
+        <form action="/game" method="POST">
+            <textarea rows="6" id="message" name="message" maxlength="2000" placeholder="Type a message here..." required></textarea>
+            <input type="hidden" id="username" name="username" value="{{username}}">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+
+    <!-- JavaScript code for dynamically displaying chat messages can go here -->
+</body>
+</html>
