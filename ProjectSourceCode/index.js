@@ -139,22 +139,24 @@ app.post('/register', async (req, res) => {
       await db.none('INSERT INTO users(username, password) VALUES($1, $2)', [req.body.username, hash]);
       
       // Need status codes for test cases 
-      // res.status(200).json({
-      //   message: 'Success'
-      // });
+      res.status(200)
+      .json({message: 'Success'})
+      .redirect('/login');
 
-      res.redirect('/login');
+      // res.redirect('/login');
   } catch (error) {
       // Causes an error message with the test cases
       console.error(error);
-      console.log("REGISTER NOT WORKING")
+      // console.log("REGISTER NOT WORKING")
 
       // Need status codes for test cases
       // res.status(400).json({
       //   message: 'Invalid input'
       // });
 
-      res.redirect('/register',{message: err.message});
+      res.status(400)
+      .json({message: 'ERROR: Bad credentials'})
+      .redirect('/register',{message: err.message});
   }
 });
 
