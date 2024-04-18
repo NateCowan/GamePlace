@@ -384,7 +384,7 @@ app.post('/explore', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      data: `fields name,genres.name; where genres.name = "${genre}" & name ~ *"${search}"*;`
+      data: `fields artworks,name,genres.name; where genres.name = "${genre}" & name ~ *"${search}"*;`
     });
     // Render the explore page with filtered results
     res.render('pages/explore', {
