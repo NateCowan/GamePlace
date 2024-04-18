@@ -73,6 +73,18 @@
         </div>
     </div>
 
+    {{#if followedGames.length}}
+    {{#each followedGames}}
+        <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{this.game_title}}</h5>
+            <!-- Add more game details if available -->
+        </div>
+        </div>
+    {{/each}}
+    {{else}}
+    <p>You are not following any games.</p>
+    {{/if}}
 
 
 

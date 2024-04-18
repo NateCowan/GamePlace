@@ -3,8 +3,12 @@
 <h3>
   Application Description
 </h3>
-Our application, GamePlace, is a video game analysis website. Users will be prompted to make a login to become a member of GamePlace. Once logged in, users are able to explore the different video games that our site has data on, and even help contribute their own reviews! 
-Our data will be shown to the user through different parts of the website. When looking at the home screen we will have different featured cards of video games that hold more information when clicked on. We will also have a search and explore page. Users can use the search bar to find a game they’d like to know more about, or they can discover a new game based on a selected genre. Not only this, but users are able to create their own reviews on a game and read other people in the community's reviews as well. 
+  Our application, GamePlace, is a video game analysis website. Users will be prompted to create their own login credentials to become a member of the GamePlace community. Once logged in, users should be able to explore the different video games that our site has data on, and even help contribute their own reviews! 
+  <br>
+	Our data will be shown to the user through different parts of the website. When looking at the explore page we will have different featured cards of video games that hold more information when clicked on.  Users can use the search bar to find a game they’d like to know more about, or they can discover games by filtering on a selected genre. Not only this, but users are able to create their own reviews on a game and read other reviews written by people in the community as well.  Along with leaving reviews, users can also like a game to add it to a personalized list of games that they can re-visit on their account page.
+ <br>
+  Once logged in and viewing the account page, users are able to see a display of all their liked games.  This makes it easier for all of our users to save and come back to games that they are interested in and want to save for future use.
+
 <br><br>
 
 <h3>
@@ -17,7 +21,7 @@ Owen Brown, Sabrina Vu, Benjamin Apelman, Cole Garvey, Nate Cowan
 
 
 <h3>
-  Tech Stack
+  Technology Stack
 </h3>
 - HTML/CSS <br>
 - Node.js <br>
@@ -65,7 +69,7 @@ We need to clone the repository on our local machine.  In the project repository
   Step 3:
 </h4>
 Open up a terminal window and navigate to the local directory in which you want to store the repository files.  Once at this directory, you can enter the following command to clone the repository using git (the quotes are not included in the command). <br>
-- git clone "HTTP url here"
+=# git clone "HTTP url here"
 
 <h4>
   Step 4:
@@ -77,14 +81,14 @@ In the same terminal window, navigate into the ‘ProjectSourceCode’ directory
   Step 5:
 </h4>
 In the terminal, once in the ‘ProjectSourceCode’ directory run the following command: <br>
-- docker-compose up -d
+=# docker-compose up -d
 
 <h4>
   Step 6:
 </h4>
 Wait a minute for the command to finish executing in the background.  While the docker containers are being created and the server is starting, open your web browser and enter the following url: <br>
 - http://localhost:3000/ <br>
-
+<br>
 Once the server has started and localhost sends a response to your web browser, you will be able to see and interact with the application in your web browser.
 
 
@@ -93,6 +97,10 @@ Once the server has started and localhost sends a response to your web browser, 
 <h3>
   Testing
 </h3>
+There is one file that needs to be changed in order to run the test cases.  Below is the path to the file from the root 'GamePlace' directory: <br>
+- ProjectSourceCode/docker-compose.yaml <br>
+<br>
+Inside the 'docker-compose.yaml' file, currently located in line 25 is the 'command' run on start-up of the docker containers. We want to replace the currnet contents ('npm start') to the new command 'npm run testandrun'.  Once the line is changed you should be free to start up the containers and in the terminal see the test cases being run.
 
 
 <br><br>
