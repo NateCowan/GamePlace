@@ -427,6 +427,7 @@ app.get('/game', async (req, res) => {
 });
 
 
+// Follow Functionality
 app.post('/follow', async (req, res) => {
   try {
     const { userId, gameId, action } = req.body;
@@ -450,6 +451,10 @@ app.post('/follow', async (req, res) => {
   }
 });
 
+// Gets all games a user is following
+/* app.get('/follow', async (req, res) => {
+
+}); */
 
 
 
