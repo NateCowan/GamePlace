@@ -371,7 +371,7 @@ app.get('/game', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Halo 5: Guardians";'
+      body: `fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "${req.body.game_title}";`
     });
     
     if (!response.ok) {
@@ -385,8 +385,8 @@ app.get('/game', async (req, res) => {
     let rating = 0;
 
     try {
-      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
+      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = '${req.body.game_title}'`);
+      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = '${req.body.game_title}'`);
     }
     catch (error)
     {
