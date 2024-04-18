@@ -112,8 +112,21 @@
                 <div class="card">
                     <div class="card-body">
 
-                        {{#if this.artworks}}
-                            <img src= {{this.artworks.[0].url}} class="card-img-top" alt="Event Image">
+                        {{#if this.cover}}
+                            <div id="cover">
+                                {{!-- <img class="card-img-top" src="{{cover}}" alt="Cover Slide"> --}}
+                            </div>
+                            <script>
+                                    var og_url = "{{this.cover.url}}";
+                                    var new_url = og_url.replace('t_thumb','t_screenshot_med');
+
+                                    var img = document.createElement('img');
+                                    img.src = new_url;
+                                    img.class="d-block w-100";
+                                    img.style="max-width:569px; max-height: 374px; margin-left: auto;margin-right: auto;width: auto; height: auto;"
+                                    img.alt="Cover Slide";
+                                    document.getElementById('cover').appendChild(img);
+                            </script>
                         {{else}}
                             <img src="https://t4.ftcdn.net/jpg/01/09/00/83/360_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg" class="card-img-top" alt="Event Image">
                         {{/if}}
@@ -122,8 +135,12 @@
                         <p class="card-text">Name: {{this.name}}</p>
                         {{#each genres}}
                           <p class="card-text">Genre: {{this.name}}</p>
-                        {{/each}}     
-
+                        {{/each}}   
+                        <br>  
+                        <form action="/game" method="GET">
+                            <input type="hidden" name="game_title" value="{{this.name}}">
+                            <input type="submit" value="Submit">
+                        </form>
                     </div>
                 </div>
             </div>
