@@ -58,6 +58,31 @@
 
 
     </style>
+
+    <script>
+        function validateForm() {
+          // check username length
+          var username = document.getElementById("username").value;
+          if (username.length < 3) {
+              alert("Username must be at least 3 characters long.");
+              return false;
+          }
+
+          // check password length
+          var password = document.getElementById("password").value;
+          var req_chars = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+          if (password.length < 8) {
+              alert("Password must be at least 8 characters long.");
+              return false;
+          }
+          // check password valid chars
+          if (!req_chars.test(password)) {
+              alert("Password must contain at least one uppercase letter, one lowercase letter, and either a digit or a special character.");
+              return false;
+          }
+          return true;
+      }
+    </script>
 </head>
 {{>message message=message}}
 <body>
@@ -70,7 +95,7 @@
 
 
   <div class="username-password-container">
-    <form action="/register" method="POST">
+    <form action="/register" method="POST" onsubmit="return validateForm()">
       <label for="username">Username</label>
       <input type="text" id="username" name="username"><br>
 
