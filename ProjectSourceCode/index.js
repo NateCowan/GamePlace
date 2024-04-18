@@ -104,9 +104,9 @@ app.get('/register', (req, res) => {
 });
 
 // Route to render the explore page
-app.get('/explore', (req, res) => {
-  res.render('pages/explore');
-});
+// app.get('/explore', (req, res) => {
+//   res.render('pages/explore');
+// });
 
 
 app.get('/account', (req, res) => {
@@ -206,7 +206,7 @@ const auth = (req, res, next) => {
 };
 
 // Authentication Required
-app.use(auth); //RECOMMENT THIS LINE
+//app.use(auth); //RECOMMENT THIS LINE
 
 
 
@@ -258,6 +258,8 @@ app.post('/filter', (req, res) => {
 
   res.json({message: 'End of route'});
 });
+
+
 
 
 //Route to add reviews for games
@@ -335,95 +337,183 @@ app.get('/logout', (req, res) => {
 });
 
 
-//We may not need this endpoint? But it is a good prototype of what an endpoint with this api look like. 
-// app.get('/get_genre', async (req, res) => {
-//   try {
-//     const response = await axios({
-//       url: `https://api.igdb.com/v4/genres`,
-//       method: `POST`,
-//       dataType: `json`,
-//       headers: {
-//         'Accept': 'application/json',
-//         'Client-ID': process.env.client_id,
-//         'Authorization': process.env.access_token,
-//       },
-//       data: "fields checksum,created_at,name,slug,updated_at,url;"
-//     });
-
-//     // Send the JSON data back to the client
-//     res.json(response.data);
-//   } catch (err) {
-//     console.error(err);
-//     // Send an error response if something goes wrong
-//     res.status(500).json({ error: 'Internal Server Error, Bearer ${process.env.access_token}' });
-//   }
-// });
 
 
-//Route to render selected game page
-
-app.get('/game', async (req, res) => {
+//Defualt Explore page displays first 10 games without constraints
+app.get('/explore', async (req, res) => {
   try {
-    const response = await fetch('https://api.igdb.com/v4/games', {
-      method: 'POST',
+    const response = await axios({
+      url: `https://api.igdb.com/v4/games`,
+      method: `POST`,
+      dataType: `json`,
       headers: {
         'Accept': 'application/json',
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Halo 5: Guardians";'
+      data: "fields artworks,name,genres.name;"
     });
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch data from IGDB');
-    }
 
-    const data = await response.json();
-    console.log(data); // Log the data
-    
-    let reviews = [];
-    let rating = 0;
+    console.log(response.data); // Log the data to see if it's fetched correctly
 
-    try {
-      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-    }
-    catch (error)
-    {
-      console.error("Error fetching review data:", error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-    if(rating[0].round==null)
-    {
-      rating[0].round=0
-    }
-    const gameData=data[0];
-    let n = gameData.involved_companies.length
-    const myDate = new Date(gameData.first_release_date*1000)
-    const companies = new Array(n);
-    for(let i = 0;i<n;i++)
-    {
-      companies.push(gameData.involved_companies[i].company.name)
-    }
-    res.render('pages/game', {
-      game_title: gameData.name,
-      cover: gameData.cover.url,
-      artworks: gameData.artworks,
-      summary: gameData.summary,
-      genre: gameData.genres,
-      platform: gameData.platforms,
-      developers: companies,
-      date: myDate.toDateString(),
-      screenshots: gameData.screenshots,
-      rating: rating[0].round,
-      username: req.session.user.username,
-      reviews: reviews
+    res.render('pages/explore', {
+      result: response.data
     });
-  } catch (error) {
-    console.error("Error fetching game data:", error);
+
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+//Partially working serach that doesnt work when genre is not provided
+app.post('/explore', async (req, res) => {
+  try {
+    const { search, genre } = req.body;
+
+    // Your code to fetch filtered results based on search query and genre
+    // You can modify the IGDB API call as needed to filter based on search and genre
+
+    const response = await axios({
+      url: `https://api.igdb.com/v4/games`,
+      method: `POST`,
+      dataType: `json`,
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.client_id,
+        'Authorization': process.env.access_token,
+      },
+      data: `fields name,genres.name; where genres.name = "${genre}" & name ~ *"${search}"*;`
+    });
+    // Render the explore page with filtered results
+    res.render('pages/explore', {
+      result: response.data
+    });
+    //res.json(response.data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------search actual implmentation ----------------------------------
+
+
+
+
+
+
+
+//We may not need this endpoint? But it is a good prototype of what an endpoint with this api look like. 
+app.get('/get_genre', async (req, res) => {
+  try {
+    const response = await axios({
+      url: `https://api.igdb.com/v4/genres`,
+      method: `POST`,
+      dataType: `json`,
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.client_id,
+        'Authorization': process.env.access_token,
+      },
+      data: "fields checksum,created_at,name,slug,updated_at,url;"
+    });
+
+    // Send the JSON data back to the client
+    res.json(response.data);
+  } catch (err) {
+    console.error(err);
+    // Send an error response if something goes wrong
+    res.status(500).json({ error: 'Internal Server Error, Bearer ${process.env.access_token}' });
+  }
+});
+
+
+// //Route to render selected game page
+
+// app.get('/game', async (req, res) => {
+//   try {
+//     const response = await fetch('https://api.igdb.com/v4/games', {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//         'Client-ID': process.env.client_id,
+//         'Authorization': process.env.access_token,
+//       },
+//       body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Halo 5: Guardians";'
+//     });
+    
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch data from IGDB');
+//     }
+
+//     const data = await response.json();
+//     console.log(data); // Log the data
+    
+//     let reviews = [];
+//     let rating = 0;
+
+//     try {
+//       reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
+//       rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
+//     }
+//     catch (error)
+//     {
+//       console.error("Error fetching review data:", error);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//     }
+//     if(rating[0].round==null)
+//     {
+//       rating[0].round=0
+//     }
+//     const gameData=data[0];
+//     let n = gameData.involved_companies.length
+//     const myDate = new Date(gameData.first_release_date*1000)
+//     const companies = new Array(n);
+//     for(let i = 0;i<n;i++)
+//     {
+//       companies.push(gameData.involved_companies[i].company.name)
+//     }
+//     res.render('pages/game', {
+//       game_title: gameData.name,
+//       cover: gameData.cover.url,
+//       artworks: gameData.artworks,
+//       summary: gameData.summary,
+//       genre: gameData.genres,
+//       platform: gameData.platforms,
+//       developers: companies,
+//       date: myDate.toDateString(),
+//       screenshots: gameData.screenshots,
+//       rating: rating[0].round,
+//       username: req.session.user.username,
+//       reviews: reviews
+//     });
+//   } catch (error) {
+//     console.error("Error fetching game data:", error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
 
 
@@ -452,3 +542,6 @@ app.get('/game', async (req, res) => {
 // app.listen(3000);
 module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
+
+
+
