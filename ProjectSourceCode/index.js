@@ -575,7 +575,6 @@ app.get('/account', async (req, res) => {
 }); */
 
 
-
 app.get('/explore', async (req, res) => {
   try {
     const response = await axios({
