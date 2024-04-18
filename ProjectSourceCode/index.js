@@ -206,7 +206,7 @@ const auth = (req, res, next) => {
 };
 
 // Authentication Required
-//app.use(auth); //RECOMMENT THIS LINE
+app.use(auth); //RECOMMENT THIS LINE
 
 
 
@@ -452,71 +452,73 @@ app.get('/get_genre', async (req, res) => {
 
 // //Route to render selected game page
 
-// app.get('/game', async (req, res) => {
-//   try {
-//     const response = await fetch('https://api.igdb.com/v4/games', {
-//       method: 'POST',
-//       headers: {
-//         'Accept': 'application/json',
-//         'Client-ID': process.env.client_id,
-//         'Authorization': process.env.access_token,
-//       },
-//       body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Halo 5: Guardians";'
-//     });
+app.get('/game', async (req, res) => {
+  try {
+    const response = await fetch('https://api.igdb.com/v4/games', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.client_id,
+        'Authorization': process.env.access_token,
+      },
+      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Halo 5: Guardians";'
+    });
     
-//     if (!response.ok) {
-//       throw new Error('Failed to fetch data from IGDB');
-//     }
+    if (!response.ok) {
+      throw new Error('Failed to fetch data from IGDB');
+    }
 
-//     const data = await response.json();
-//     console.log(data); // Log the data
+    const data = await response.json();
+    console.log(data); // Log the data
     
-//     let reviews = [];
-//     let rating = 0;
+    let reviews = [];
+    let rating = 0;
 
-//     try {
-//       reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-//       rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
-//     }
-//     catch (error)
-//     {
-//       console.error("Error fetching review data:", error);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//     if(rating[0].round==null)
-//     {
-//       rating[0].round=0
-//     }
-//     const gameData=data[0];
-//     let n = gameData.involved_companies.length
-//     const myDate = new Date(gameData.first_release_date*1000)
-//     const companies = new Array(n);
-//     for(let i = 0;i<n;i++)
-//     {
-//       companies.push(gameData.involved_companies[i].company.name)
-//     }
-//     res.render('pages/game', {
-//       game_title: gameData.name,
-//       cover: gameData.cover.url,
-//       artworks: gameData.artworks,
-//       summary: gameData.summary,
-//       genre: gameData.genres,
-//       platform: gameData.platforms,
-//       developers: companies,
-//       date: myDate.toDateString(),
-//       screenshots: gameData.screenshots,
-//       rating: rating[0].round,
-//       username: req.session.user.username,
-//       reviews: reviews
-//     });
-//   } catch (error) {
-//     console.error("Error fetching game data:", error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
+    try {
+      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
+      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = 'Halo 5: Guardians'`);
+    }
+    catch (error)
+    {
+      console.error("Error fetching review data:", error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+    if(rating[0].round==null)
+    {
+      rating[0].round=0
+    }
+    const gameData=data[0];
+    let n = gameData.involved_companies.length
+    const myDate = new Date(gameData.first_release_date*1000)
+    const companies = new Array(n);
+    for(let i = 0;i<n;i++)
+    {
+      companies.push(gameData.involved_companies[i].company.name)
+    }
+    res.render('pages/game', {
+      game_title: gameData.name,
+      cover: gameData.cover.url,
+      artworks: gameData.artworks,
+      summary: gameData.summary,
+      genre: gameData.genres,
+      platform: gameData.platforms,
+      developers: companies,
+      date: myDate.toDateString(),
+      screenshots: gameData.screenshots,
+      rating: rating[0].round,
+      username: req.session.user.username,
+      reviews: reviews
+    });
+  } catch (error) {
+    console.error("Error fetching game data:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
-
+app.post('/follow', async (req, res) => {
+  try {
+    const { userId, gameId, action } = req.body;
     // Perform authentication check here
     
     if (action === 'follow') {
