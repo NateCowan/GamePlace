@@ -461,13 +461,12 @@ app.get('/game', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      body: `fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "${req.body.game_title}";`
+      body: `fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "${req.query.game_title}";`
     });
     
     if (!response.ok) {
       throw new Error('Failed to fetch data from IGDB');
     }
-
     const data = await response.json();
     console.log(data); // Log the data
     
@@ -475,8 +474,8 @@ app.get('/game', async (req, res) => {
     let rating = 0;
 
     try {
-      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = '${req.body.game_title}'`);
-      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = '${req.body.game_title}'`);
+      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = '${req.query.game_title}'`);
+      rating = await db.query(`SELECT ROUND(AVG(rating),2) FROM reviews WHERE game_title = '${req.query.game_title}'`);
     }
     catch (error)
     {
@@ -488,13 +487,29 @@ app.get('/game', async (req, res) => {
       rating[0].round=0
     }
     const gameData=data[0];
-    let n = gameData.involved_companies.length
-    const myDate = new Date(gameData.first_release_date*1000)
-    const companies = new Array(n);
-    for(let i = 0;i<n;i++)
-    {
-      companies.push(gameData.involved_companies[i].company.name)
+    console.log("Fetched gameData...")
+    console.log(gameData)
+    let companies = []
+    let myDate = 0
+    try{
+      let n = gameData.involved_companies.length
+      companies = new Array(n);
+      for(let i = 0;i<n;i++)
+      {
+        companies.push(gameData.involved_companies[i].company.name)
+      }
     }
+    catch
+    {
+      console.log('No involved companies')
+      companies = []
+    }
+    try{
+    myDate = new Date(gameData.first_release_date*1000)
+    }
+    catch{console.log('No release date'); myDate = 0}
+    
+    
     res.render('pages/game', {
       game_title: gameData.name,
       cover: gameData.cover.url,
