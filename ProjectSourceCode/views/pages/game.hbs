@@ -190,11 +190,18 @@
     <h2>Description</h2>
     <p>{{summary}}</p>
     <!-- Follow Button -->
-    <div class="d-flex justify-content-center" style="margin-top: 20px;">
-        <a href="#" class="btn btn-primary custom-btn" style="background-color: #8f04ba; color: white; border-color: #ff00f7;">
-            <i class="fas fa-thumbs-up"></i> Follow This Game
-        </a>    
-    </div>
+
+    <!-- Follow Button -->
+    <form action="/game/follow" method="POST">
+        <input type="hidden" name="username" value="{{username}}">
+        <input type="hidden" name="game_title" value="{{game_title}}">
+        <div class="d-flex justify-content-center" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-primary custom-btn" style="background-color: #8f04ba; color: white; border-color: #ff00f7;">
+                <i class="fas fa-thumbs-up"></i> Follow This Game
+            </button>
+        </div>
+    </form>
+
     
     
 </div>

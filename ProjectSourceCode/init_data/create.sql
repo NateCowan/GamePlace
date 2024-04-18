@@ -51,12 +51,18 @@ CREATE TABLE IF NOT EXISTS game_to_genres(
 -- Follow table
 CREATE TABLE IF NOT EXISTS follows (
     follow_id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    game_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (game_id) REFERENCES game_data (game_id),
-    UNIQUE(user_id, game_id) -- Ensures a user can only follow a game once
+    username VARCHAR(50),
+    game_title VARCHAR(50)
 );
+
+-- Link users to follows
+CREATE TABLE IF NOT EXISTS users_to_follows(
+    user_id INT NOT NULL,
+    follow_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (user_id),
+    FOREIGN KEY (follow_id) REFERENCES follows (follow_id)
+);
+
 
 
 
