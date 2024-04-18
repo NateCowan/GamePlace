@@ -351,61 +351,13 @@ app.get('/explore', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-<<<<<<< HEAD
       data: "fields artworks,name,genres.name;"
-=======
-      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Team Fortress 2";'
->>>>>>> 4b0b42b63bdcc0bf8a206d1ea60ec20821e06b2a
     });
 
-<<<<<<< HEAD
     console.log(response.data); // Log the data to see if it's fetched correctly
 
     res.render('pages/explore', {
       result: response.data
-=======
-    const data = await response.json();
-    console.log(data); // Log the data
-    
-    let reviews = [];
-    let rating_to_send = 0;
- 
-    try {
-      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = $1`, ['Team Fortress 2']);
-      const ratingResult = await db.query(`SELECT ROUND(AVG(rating), 2) AS avg_rating FROM reviews WHERE game_title = $1`, ['Team Fortress 2']);
-
-      if (ratingResult.length > 0 && ratingResult[0].avg_rating !== null) {
-        rating_to_send = ratingResult[0].avg_rating;
-      }
-    } catch (error) {
-      console.error('Failed to fetch review data:', error);
-      rating_to_send = 0;
-      reviews = [];
-    }
-
-    const gameData = data[0];
-    const n = gameData.involved_companies.length;
-    const myDate = new Date(gameData.first_release_date * 1000);
-    const companies = new Array(n);
-
-    for (let i = 0; i < n; i++) {
-      companies.push(gameData.involved_companies[i].company.name);
-    }
-
-    res.render('pages/game', {
-      game_title: gameData.name,
-      cover: gameData.cover.url,
-      artworks: gameData.artworks,
-      summary: gameData.summary,
-      genre: gameData.genres,
-      platform: gameData.platforms,
-      developers: companies,
-      date: myDate.toDateString(),
-      screenshots: gameData.screenshots,
-      rating: rating_to_send,
-      username: req.session.user.username,
-      reviews: reviews
->>>>>>> 4b0b42b63bdcc0bf8a206d1ea60ec20821e06b2a
     });
 
   } catch (err) {
@@ -415,7 +367,6 @@ app.get('/explore', async (req, res) => {
 });
 
 
-<<<<<<< HEAD
 //Partially working serach that doesnt work when genre is not provided
 app.post('/explore', async (req, res) => {
   try {
@@ -565,12 +516,6 @@ app.get('/get_genre', async (req, res) => {
 // });
 
 
-=======
-// Follow Functionality
-app.post('/follow', async (req, res) => {
-  try {
-    const { userId, gameId, action } = req.body;
->>>>>>> 4b0b42b63bdcc0bf8a206d1ea60ec20821e06b2a
 
     // Perform authentication check here
     
