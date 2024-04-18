@@ -351,13 +351,13 @@ app.get('/explore', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      data: "fields artworks,name,genres.name;"
+      data: "fields cover.*,name,genres.name;"
     });
 
     console.log(response.data); // Log the data to see if it's fetched correctly
 
     res.render('pages/explore', {
-      result: response.data
+      result: response.data,
     });
 
   } catch (err) {
