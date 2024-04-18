@@ -371,7 +371,7 @@ app.get('/game', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Halo 5: Guardians";'
+      body: 'fields name,cover.*,artworks.*,summary,genres.*,platforms.*,involved_companies.company.*,screenshots.*,first_release_date; where name = "Team Fortress 2";'
     });
     
     if (!response.ok) {
@@ -385,8 +385,8 @@ app.get('/game', async (req, res) => {
     let rating_to_send = 0;
  
     try {
-      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = $1`, ['Halo 5: Guardians']);
-      const ratingResult = await db.query(`SELECT ROUND(AVG(rating), 2) AS avg_rating FROM reviews WHERE game_title = $1`, ['Halo 5: Guardians']);
+      reviews = await db.query(`SELECT * FROM reviews WHERE game_title = $1`, ['Team Fortress 2']);
+      const ratingResult = await db.query(`SELECT ROUND(AVG(rating), 2) AS avg_rating FROM reviews WHERE game_title = $1`, ['Team Fortress 2']);
 
       if (ratingResult.length > 0 && ratingResult[0].avg_rating !== null) {
         rating_to_send = ratingResult[0].avg_rating;
