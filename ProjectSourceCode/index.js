@@ -108,14 +108,24 @@ app.get('/register', (req, res) => {
 //   res.render('pages/explore');
 // });
 
+app.get('/account', async (req, res) => {
+  try {
+    const username = req.session.user.username; 
 
-app.get('/account', (req, res) => {
-  if (req.session.user) { 
+    // Query to fetch the game titles the user follows
+    const followedGamesQuery = 'SELECT game_title FROM follows WHERE username = $1;';
+    const followedGames = await db.any(followedGamesQuery, [username]);
     const firstInitial = req.session.user.username.charAt(0).toUpperCase();
-    res.render('pages/account', { username: req.session.user.username, firstInitial: firstInitial });
-  } else {
-    
-    res.redirect('/login');
+    // Render the account page and pass the followed games to the template
+    res.render('pages/account', {
+      // ... other user info ...
+      username : req.session.user.username,
+      firstInitial: firstInitial,
+      followedGames: followedGames
+    });
+  } catch (error) {
+    console.error('Error fetching followed games:', error);
+    res.status(500).send('An error occurred while fetching followed games.');
   }
 });
 
@@ -562,26 +572,6 @@ app.post('/game/follow', async (req, res) => {
     res.status(500).send('An error occurred while following the game.');
   }
 });
-
-app.get('/account', async (req, res) => {
-  try {
-    const username = req.session.user.username; 
-
-    // Query to fetch the game titles the user follows
-    const followedGamesQuery = 'SELECT game_title FROM follows WHERE username = $1;';
-    const followedGames = await db.any(followedGamesQuery, [username]);
-
-    // Render the account page and pass the followed games to the template
-    res.render('pages/account', {
-      // ... other user info ...
-      followedGames: followedGames
-    });
-  } catch (error) {
-    console.error('Error fetching followed games:', error);
-    res.status(500).send('An error occurred while fetching followed games.');
-  }
-});
-
 
 
 // Gets all games a user is following
