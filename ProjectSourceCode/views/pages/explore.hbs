@@ -1,3 +1,5 @@
+
+
 {{>nav}}
 
 
@@ -22,36 +24,27 @@
     </style>
     <h1 class="p-3">Explore:</h1>
 
-    <div class="container d-flex p-2">
-    {{!-- SEARCH BAR --}}
-        <div class="search-div" style="flex: 2;">
-            <form action="/search" method="POST" role="search">
-                <input type="search" name="search" id="search-bar" placeholder="search">
-                <button class="btn btn-outline-success" type="submit">search</button>
-            </form>
+    <div class="container d-flex flex-column p-2">
+    <!-- SEARCH BAR -->
+
+    <form action="/explore" method="POST">
+        
+        <div class="search-div">
+            <label for="search">Search</label>
+            <input type="search" id="search" name="search" placeholder="Name">
         </div>
 
-
-        {{!-- Implement the following request path to get data from the API to display the 
-        genres, https://api.igdb.com/v4/genres --}}
-        <div>
-        {{!-- GENRE DROPDOWN --}}
-            <select id="FILTER" >
-                <option>Filter by Genre</option>
-                {{!-- temporary options until we use the API --}}
-                <option value="action">Action</option>
-                <option value="adventure">Adventure</option>
-                <option value="co-op">Co-Op</option>
-                <option value="etc">etc.</option>
-
-            {{!-- {{#each genre}}
-                <option value=""></option>
-            {{/each}} --}}
-
-            </select>
+        <div class="genre-div">
+            <label for="genre">Genre</label>
+            <input type="search" id="genre" name="genre" placeholder="Genre">
         </div>
 
-    </div>
+        <input type="submit" value="Explore">
+  </form>
+
+
+</div>
+
 
 
 
@@ -63,20 +56,37 @@
 
         <div class="d-flex flex-wrap justify-content-evenly p-1">
 
-        {{!-- temporary cards until we use the API --}}
+        
 
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="https://t4.ftcdn.net/jpg/01/09/00/83/240_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg" class="card-img-top" alt="Event Image">
-                <div class="card-body">
-                    <h5 class="card-title">{{name}}</h5>
-                    <h3 class="card-text">Reviews: {{dates.start.localDate}}</h3>
+       
+        
+        {{#each result}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
 
-                    <p>TO DO: 1) make liked games display on account apge 2) make games render dynamically <p>
-                    <a href="#" class="btn btn-primary custom-btn"><i class="fas fa-thumbs-up"></i> </a>
+                        {{#if this.artworks}}
+                            <img src= {{this.artworks.[0].url}} class="card-img-top" alt="Event Image">
+                        {{else}}
+                            <img src="https://t4.ftcdn.net/jpg/01/09/00/83/360_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg" class="card-img-top" alt="Event Image">
+                        {{/if}}
+
+
+                        <p class="card-text">Name: {{this.name}}</p>
+                        {{#each genres}}
+                          <p class="card-text">Genre: {{this.name}}</p>
+                        {{/each}}     
+
+                    </div>
                 </div>
             </div>
-        </div>
+       {{/each}}
+
+
+
+
+
+
 
 
 

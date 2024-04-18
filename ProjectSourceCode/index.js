@@ -458,7 +458,62 @@ app.post('/follow', async (req, res) => {
 
 
 
+app.get('/explore', async (req, res) => {
+  try {
+    const response = await axios({
+      url: `https://api.igdb.com/v4/games`,
+      method: `POST`,
+      dataType: `json`,
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.client_id,
+        'Authorization': process.env.access_token,
+      },
+      data: "fields artworks,name,genres.name;"
+    });
 
+    console.log(response.data); // Log the data to see if it's fetched correctly
+
+    res.render('pages/explore', {
+      result: response.data
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+//Partially working serach that doesnt work when genre is not provided
+app.post('/explore', async (req, res) => {
+  try {
+    const { search, genre } = req.body;
+
+    // Your code to fetch filtered results based on search query and genre
+    // You can modify the IGDB API call as needed to filter based on search and genre
+
+    const response = await axios({
+      url: `https://api.igdb.com/v4/games`,
+      method: `POST`,
+      dataType: `json`,
+      headers: {
+        'Accept': 'application/json',
+        'Client-ID': process.env.client_id,
+        'Authorization': process.env.access_token,
+      },
+      data: `fields artworks,name,genres.name; where genres.name = "${genre}" & name ~ *"${search}"*;`
+    });
+    // Render the explore page with filtered results
+    res.render('pages/explore', {
+      result: response.data
+    });
+    //res.json(response.data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 
