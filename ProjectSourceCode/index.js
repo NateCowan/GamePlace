@@ -304,16 +304,46 @@ app.post('/game', async (req, res) => {
       console.error("Error fetching review data:", error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
+    let date_to_send = 'No date'
+    try
+    {
+      date_to_send = new Date(gameData.first_release_date*1000).toDateString()
+    }
+    catch
+    {
+      console.log('No release date'); myDate = 0;
+    }
+    let cover_to_return = "https://t4.ftcdn.net/jpg/01/09/00/83/360_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg"
+    if(gameData.cover)
+    {
+      cover_to_return = gameData.cover.url
+    }
+    let companies = []
+    let message = ''
+    try{
+      let n = gameData.involved_companies.length
+      companies = new Array(n);
+      for(let i = 0;i<n;i++)
+      {
+        companies.push(gameData.involved_companies[i].company.name)
+      }
+    }
+    catch
+    {
+      console.log('No involved companies')
+      message = 'This game contains incomplete data from IGDB, sorry!'
+      companies = []
+    }
     // Render the game page with data
     res.render('pages/game', {
       game_title: gameData.name,
-      cover: gameData.cover.url,
+      cover: cover_to_return,
       artworks: gameData.artworks,
       summary: gameData.summary,
       genre: gameData.genres,
       platform: gameData.platforms,
-      developers: gameData.involved_companies.map(company => company.company.name),
-      date: new Date(gameData.first_release_date * 1000).toDateString(),
+      developers: companies,
+      date: date_to_send,
       screenshots: gameData.screenshots,
       rating: rating[0].round,
       username: req.session.user.username,
@@ -384,7 +414,7 @@ app.post('/explore', async (req, res) => {
         'Client-ID': process.env.client_id,
         'Authorization': process.env.access_token,
       },
-      data: `fields artworks,name,genres.name; where genres.name = "${genre}" & name ~ *"${search}"*;`
+      data: `fields cover.*,name,genres.name; where genres.name = "${genre}" & name ~ *"${search}"*;`
     });
     // Render the explore page with filtered results
     res.render('pages/explore', {
@@ -491,6 +521,7 @@ app.get('/game', async (req, res) => {
     console.log(gameData)
     let companies = []
     let myDate = 0
+    let message = ''
     try{
       let n = gameData.involved_companies.length
       companies = new Array(n);
@@ -502,27 +533,33 @@ app.get('/game', async (req, res) => {
     catch
     {
       console.log('No involved companies')
+      message = 'This game contains incomplete data from IGDB, sorry!'
       companies = []
     }
     try{
-    myDate = new Date(gameData.first_release_date*1000)
+    myDate = new Date(gameData.first_release_date*1000).toDateString()
     }
-    catch{console.log('No release date'); myDate = 0}
-    
+    catch{console.log('No release date'); myDate = 0;}
+    cover_to_return = "https://t4.ftcdn.net/jpg/01/09/00/83/360_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg"
+    if(gameData.cover)
+    {
+      cover_to_return = gameData.cover.url
+    }
     
     res.render('pages/game', {
       game_title: gameData.name,
-      cover: gameData.cover.url,
+      cover: cover_to_return,
       artworks: gameData.artworks,
       summary: gameData.summary,
       genre: gameData.genres,
       platform: gameData.platforms,
       developers: companies,
-      date: myDate.toDateString(),
+      date: myDate,
       screenshots: gameData.screenshots,
       rating: rating[0].round,
       username: req.session.user.username,
-      reviews: reviews
+      reviews: reviews,
+      message: message
     });
   } catch (error) {
     console.error("Error fetching game data:", error);
