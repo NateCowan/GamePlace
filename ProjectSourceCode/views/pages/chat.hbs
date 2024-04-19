@@ -20,9 +20,6 @@
             background-color: rgb(252, 247, 252);
             border-radius: 10px;
             box-shadow: 0 0 10px rgb(204, 53, 88);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -71,6 +68,7 @@
             width: 100%;
             max-width: 800px;
             margin-top: 20px;
+            height: 400px;
         }
 
         .message {
@@ -93,32 +91,37 @@
     </style>
 </head>
 <body>
-    {{>nav}} <!-- Include navigation if needed -->
+    {{>nav}}
 
-    <div class="container">
-        <h1>{{game_title}}</h1>
+    <div class="container" style="display: flex;flex-direction: column;align-items: center;">
+        <h1>{{game_title}} Global Chat</h1>
 
         <br>
 
         <!-- Chat Messages -->
-        <div class="chat-container">
-            <!-- Example of displaying chat messages dynamically using JavaScript -->
-            <!-- You'll need to implement this functionality using JavaScript -->
-            <!-- Example: -->
-            <!-- <div class="message">
-                <span class="username">User123:</span>
-                <span class="timestamp">April 18, 2024 12:00 PM</span>
-                <p>Hello, how are you?</p>
-            </div> -->
+        <div class="chat-container" style="overflow: auto;display: flex;flex-direction: column-reverse;">
+            {{#if chats}}
+            {{#each chats}}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.username}}</h5>
+                    <p class="card-text">{{this.msg}}</p>
+                </div>
+            </div>
+            <br>
+            {{/each}}
+            {{else}}
+            <h6>It's quiet in here...say something about {{game_title}}!</h6>
+            {{/if}}
         </div>
         <!-- Chat Form -->
-        <form action="/game" method="POST">
-            <textarea rows="6" id="message" name="message" maxlength="2000" placeholder="Type a message here..." required></textarea>
+        <form action="/chat" method="POST">
+            <textarea rows="2" style="width: 500px;" id="msg" name="msg" maxlength="280" placeholder="Type a message here..." required></textarea>
             <input type="hidden" id="username" name="username" value="{{username}}">
-            <input type="submit" value="Send">
+            <input type="hidden" id="game_title" name="game_title" value="{{game_title}}">
+            <input type="submit" style="width: 80px;" value="Send">
         </form>
+        <br>
     </div>
-
-    <!-- JavaScript code for dynamically displaying chat messages can go here -->
 </body>
 </html>

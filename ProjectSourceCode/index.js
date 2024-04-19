@@ -459,8 +459,83 @@ app.post('/explore', async (req, res) => {
 
 //------------------------------search actual implmentation ----------------------------------
 
+app.get('/chat', async (req,res) => {
+  try{
+  const query =
+      `SELECT * FROM chats WHERE game_title = '${req.query.game_title}'`;
+    const data =  await db.query(query);
+    console.log(data)
+    res.render('pages/chat', {
+      game_title: req.query.game_title,
+      username: req.session.user.username,
+      chats: data
+    });
+  }
+  catch(error)
+  {
+    console.error("Error fetching review data:", error);
+  res.status(500).json({ error: 'Internal Server Error' });
+}
+});
 
-
+app.post('/chat', async (req,res) => {
+  try{
+  const query =
+      `insert into chats (username, msg, game_title) values ($1, $2, $3)  returning *;`;
+    const data =  await db.task('get-everything', task => {
+      return task.batch([task.any(query, [
+        req.body.username,
+        req.body.msg,
+        req.body.game_title,
+      ])]);
+    });
+    try
+    {
+      const size_query =
+      `SELECT COUNT(*) FROM chats;`;
+    const data_1 = await db.query(size_query)
+    console.log(data_1)
+    if((data_1[0].count)>20)
+    {
+      try{
+      const rem_old = `DELETE FROM chats WHERE chat_id = (SELECT chat_id FROM chats WHERE game_title = '${req.body.game_title}' LIMIT 1);`
+      await db.query(rem_old)
+      }
+      catch(error)
+      {
+        console.error("Error deleting chat:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    }
+    try{
+      const get_msgs =
+          `SELECT * FROM chats WHERE game_title = '${req.body.game_title}'`;
+        const msg_data = await db.query(get_msgs);
+        console.log(msg_data)
+        res.render('pages/chat', {
+          game_title: req.body.game_title,
+          username: req.session.user.username,
+          chats: msg_data
+        });
+      }
+      catch(error)
+      {
+        console.error("Error fetching msgs:", error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+  catch(error)
+  {
+    console.error("Error sizing chats:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+  catch(error)
+  {
+    console.error("Error adding chat:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 

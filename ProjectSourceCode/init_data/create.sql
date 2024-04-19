@@ -14,6 +14,13 @@ CREATE TABLE IF NOT EXISTS reviews(
     game_title VARCHAR(50)
 );
 
+CREATE TABLE IF NOT EXISTS chats(
+    chat_id SERIAL PRIMARY KEY,
+    username VARCHAR(50),
+    msg VARCHAR(280) NOT NULL,
+    game_title VARCHAR(50)
+);
+
 -- Link users to reviews
 CREATE TABLE IF NOT EXISTS users_to_reviews(
     user_id INT NOT NULL,
