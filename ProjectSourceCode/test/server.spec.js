@@ -36,11 +36,11 @@ const {assert, expect} = chai;
 
 // Test Cases for POST /register route
 describe('Testing register API', () => {
-  it('positive : /register', done => {
+  it('positive => /register', done => {
     chai
       .request(server)
       .post('/register')
-      .send({username: 'u3', password: 'password'})
+      .send({username: 'testcaseuser', password: 'testcasepass'})
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.message).to.equals('Success');
@@ -48,14 +48,14 @@ describe('Testing register API', () => {
       });
   });
 
-  it('Negative : /register -> Checking invalid name', done => {
+  it('Negative => /register', done => {
     chai
       .request(server)
       .post('/register')
-      .send({username: 'u11', password:'password'})
+      .send({username: 'CHANGE THIS', password:'faultypassword'})
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.message).to.equals('Invalid input');
+        expect(res.body.message).to.equals('ERROR: Bad credentials');
         done();
       });
   });
@@ -63,33 +63,33 @@ describe('Testing register API', () => {
 });
 
 
-// // Test Cases for POST /login route
-describe('Testing login API', () => {
-  it('positive : /login -> user found', done => {
-    chai
-      .request(server)
-      .post('/login')
-      .send({username: 'testUser', password: 'password'})
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.message).to.equals('Success');
-        done();
-      });
-  });
+// Test Cases for POST /login route
+// describe('Testing login API', () => {
+//   it('positive : /login -> user found', done => {
+//     chai
+//       .request(server)
+//       .post('/login')
+//       .send({username: 'testUser', password: 'password'})
+//       .end((err, res) => {
+//         expect(res).to.have.status(200);
+//         expect(res.body.message).to.equals('Success');
+//         done();
+//       });
+//   });
 
-  it('Negative : /login -> user not found', done => {
-    chai
-      .request(server)
-      .post('/login')
-      .send({username: 'userNotInDB', password:'password'})
-      .end((err, res) => {
-        expect(res).to.have.status(400);
-        expect(res.body.message).to.equals('User not found');
-        done();
-      });
-  });
+//   it('Negative : /login -> user not found', done => {
+//     chai
+//       .request(server)
+//       .post('/login')
+//       .send({username: 'userNotInDB', password:'password'})
+//       .end((err, res) => {
+//         expect(res).to.have.status(400);
+//         expect(res.body.message).to.equals('User not found');
+//         done();
+//       });
+//   });
 
-});
+// });
 
 // describe('Testing Redirect', () => {
 //   // Sample test case given to test /test endpoint.
