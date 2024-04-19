@@ -56,6 +56,7 @@
             text-decoration: underline;
         }
     </style>
+
 </head>
 <body>
     {{>nav}}
@@ -73,12 +74,19 @@
         </div>
     </div>
 
+    <h1>Followed Games:</h1>
     {{#if followedGames.length}}
     {{#each followedGames}}
         <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{this.game_title}}</h5>
             <!-- Add more game details if available -->
+            <form action="/game" method="GET">
+                <input type="hidden" name="game_title" value="{{this.game_title}}">
+
+                <input type="submit" value="Take a Look">
+
+            </form>
         </div>
         </div>
     {{/each}}
