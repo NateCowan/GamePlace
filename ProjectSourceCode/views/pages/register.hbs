@@ -2,111 +2,129 @@
 <html lang="en">
 <head>
     <style>
-      .username-password-container{
-        text-align: right;
-        padding-right: 33vh;
+      /* Resetting default margin and padding */
+      body, h1, h2, h3, p, ul, ol, li, form, input {
+        margin: 0;
+        padding: 0;
       }
-      form {
+
+      /* Setting default font family */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0; /* Light gray background */
+      }
+
+      /* Full-height container for flexbox */
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* 100% viewport height */
+      }
+
+      /* Register panel styling */
+      .register-panel {
+        background-color: #ffffff; /* White background */
         border-radius: 10px;
-        padding: 20px; 
-        background-color: #f5f5f5; 
-        display: inline-block; 
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding shadow for depth */
+      }
+
+      /* Register form styling */
+      form {
+        text-align: center;
+      }
+
+      form label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333; /* Dark gray color for labels */
       }
 
       form input[type="text"],
       form input[type="password"] {
-        width: 70%; 
-        padding: 10px; 
-        border: 1px solid #ccc; 
-        border-radius: 8px; 
-        margin-bottom: 10px; 
-        box-sizing: border-box; 
-        transition: border-color 0.3s ease; 
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
       }
 
       form input[type="text"]:hover,
       form input[type="password"]:hover {
-        border-color: #aaa; 
+        border-color: #aaa;
       }
 
-      /*SUBMIT BUTTON*/
       form input[type="submit"] {
-        width: 30%; 
-        padding: 10px; 
-        border: none; 
-        border-radius: 8px; 
-        background-color: rgb(124, 124, 124); 
-        cursor: pointer; 
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background-color: #800080; /* Purple color for submit button */
+        color: #fff; /* White text color for submit button */
+        cursor: pointer;
+        transition: background-color 0.3s ease;
       }
+
       form input[type="submit"]:hover {
-        background-color: green; 
+        background-color: #6a007d; /* Darker purple color on hover */
       }
 
-
-      /*"login" text styling*/
-      .the-text {
-        font-size: 60px;
-        padding-left: 6%;
-        padding-top: 10%;
+      /* Additional link styling */
+      .have-account-link {
+        text-align: center;
+        margin-top: 10px;
+        color: #333; /* Dark gray color for text */
       }
-      
-      .dont-have-account{
+
+      .have-account-link a {
+        color: #800080; /* Purple color for links */
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .have-account-link a:hover {
+        color: #6a007d; /* Darker purple color on hover */
+      }
+
+      /* Register header styling */
+      header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      header h1 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #800080; /* Purple color for header text */
         font-size: 36px;
-        padding-top: 5%;
-        padding-left: 18%;
+        margin-bottom: 10px;
       }
-
-
     </style>
-
-    <script>
-        function validateForm() {
-          // check username length
-          var username = document.getElementById("username").value;
-          if (username.length < 3) {
-              alert("Username must be at least 3 characters long.");
-              return false;
-          }
-
-          // check password length
-          var password = document.getElementById("password").value;
-          var req_chars = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
-          if (password.length < 8) {
-              alert("Password must be at least 8 characters long.");
-              return false;
-          }
-          // check password valid chars
-          if (!req_chars.test(password)) {
-              alert("Password must contain at least one uppercase letter, one lowercase letter, and either a digit or a special character.");
-              return false;
-          }
-          return true;
-      }
-    </script>
 </head>
-{{>message message=message}}
 <body>
+  <div class="container">
+    <header>
+      <h1>Register</h1>
+    </header>
 
+    <div class="register-panel">
+      <form action="/register" method="POST" onsubmit="return validateForm()">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username">
 
-  <div class="the-text">Register!</div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
 
+        <input type="submit" value="Register">
+      </form>
+    </div>
 
-
-
-
-  <div class="username-password-container">
-    <form action="/register" method="POST" onsubmit="return validateForm()">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username"><br>
-
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password"><br><br>
-
-      <input type="submit" value="Register"><br> 
-
-    </form>
+    <div class="have-account-link">
+      Already have an account? <a href="/login">Login</a>
+    </div>
   </div>
-
-  <div class = "dont-have-account">  Already have an account?  <a href="/login"> Login </div>
 </body>
 </html>
