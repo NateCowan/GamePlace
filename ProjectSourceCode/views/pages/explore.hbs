@@ -108,63 +108,57 @@
 
 
 
-    {{!-- DISPLAY BOOTSTRAP CARDS FOR GAMES --}}
+    <!-- DISPLAY BOOTSTRAP CARDS FOR GAMES -->
     <div class="container d-flex flex-column p-3">
-
-
         <h4>Popular</h4>
-
-        <div class="d-flex flex-wrap justify-content-evenly p-1">
-
-
         
-        {{#each result}}
+        <!-- Added row class and justify-content-evenly -->
+        <div class="row justify-content-evenly p-1">
+            {{#each result}}
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body" id="card-body-{{this.id}}"> <!-- Unique ID based on game ID -->
+                <div class="card h-100"> <!-- Make all cards have the same height -->
+                    <div class="card-body d-flex flex-column justify-content-between" id="card-body-{{this.id}}"> <!-- Unique ID based on game ID -->
                         {{#if this.cover}}
-                            <div class="cover cover-{{this.id}}"> <!-- Unique class based on game ID -->
-                                <!-- Placeholder for the image -->
-                            </div>
-                            <script>
-                                var og_url = "{{this.cover.url}}";
-                                var new_url = og_url.replace('t_thumb', 't_screenshot_med');
+                        <div class="cover cover-{{this.id}}"> <!-- Unique class based on game ID -->
+                            <!-- Placeholder for the image -->
+                        </div>
+                        <script>
+                            var og_url = "{{this.cover.url}}";
+                            var new_url = og_url.replace('t_thumb', 't_screenshot_med');
 
-                                var img = document.createElement('img');
-                                img.src = new_url;
-                                img.className = "d-block w-100";
-                                img.style.maxWidth = "569px";
-                                img.style.maxHeight = "374px";
-                                img.style.marginLeft = "auto";
-                                img.style.marginRight = "auto";
-                                img.style.width = "auto";
-                                img.style.height = "auto";
-                                img.alt = "Cover Slide";
-                                document.querySelector('.cover-{{this.id}}').appendChild(img); // Selecting based on the unique class
-                            </script>
+                            var img = document.createElement('img');
+                            img.src = new_url;
+                            img.className = "d-block w-100";
+                            img.style.maxHeight = "200px";
+                            img.style.marginLeft = "auto";
+                            img.style.marginRight = "auto";
+                            img.style.width = "auto";
+                            img.style.height = "auto";
+                            img.alt = "Cover Slide";
+                            document.querySelector('.cover-{{this.id}}').appendChild(img); // Selecting based on the unique class
+                        </script>
                         {{else}}
-                            <img src="https://t4.ftcdn.net/jpg/01/09/00/83/360_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg" class="card-img-top" alt="Event Image">
+                        <!-- Placeholder image in case cover image is not available -->
+                        <img src="https://t4.ftcdn.net/jpg/01/09/00/83/360_F_109008395_OQDupHMza1V6CNOzrJwWAKlaktT4IsRW.jpg" class="card-img-top" alt="Event Image">
                         {{/if}}
-
+                        <!-- Displaying game name -->
                         <p class="card-text">Name: {{this.name}}</p>
                         {{#each genres}}
-                            <p class="card-text">Genre: {{this.name}}</p>
+                        <!-- Displaying game genre -->
+                        <p class="card-text">Genre: {{this.name}}</p>
                         {{/each}}
-
-                        <br>  
+                        <br>
+                        <!-- Go to game method -->
                         <form action="/game" method="GET">
                             <input type="hidden" name="game_title" value="{{this.name}}">
-
                             <input type="submit" value="Take a Look">
-
                         </form>
                     </div>
                 </div>
             </div>
-        {{/each}}
-
+            {{/each}}
         </div>
-
     </div>
+
 
 </body>
