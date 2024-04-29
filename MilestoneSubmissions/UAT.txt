@@ -1,16 +1,22 @@
-1.
-For the first test, the user will enter a username and password into the proper register page text boxes.
-To test correctness, the user will then attempt to log in using this username and password, and will successfully load the explore page with their username.
+1.Registration Page Test Plan
+	The user should be able to create an account for the platform using a username and password. The first test case will be to verify that the user can create an account using unused credentials.
+    The data used will be a username and password inputted by the user in the localhost test environment, and the expected result is that the user will be redirected to the login page and able to log in with their credentials.
+    The second test case will be to verify that the user cannot create an account that’s already been created. The data will be a username that’s already in the database and a password inputted by the user in the localhost test environment, and the expected result is that the user will not be able to create an account, and will instead be redirected to the login page.
+    In both cases, the user acceptance testers will be internal team members creating accounts.
 
-2.
+2.Search Bar Test Plan
+    The user should be able to search for a game by keyword or genre, and have results displayed to them on the explore page. The first test case will be to verify that the user can search by genre. 
+    The data used will be a genre selected by the user in a dropdown in the localhost test environment, and the expected result is that the page will update to show games that match said genre. 
+    The second test case will be to verify that the user can search by keyword. The data will be a text input containing a keyword that is inputted by the user in the localhost test environment, and the expected result is that the page will update to show games that match the inputted keyword. 
+    In both cases, the user acceptance testers will be internal team members.
 
 
-3.
+3.Review Posting
+	The user should be able to write a review for a game that will display on a games page and give it a rating. The first test case will be to verify that the user can type and post a review that will go beneath a game and contribute to its rating. 
+    The data used will be a textual input plus a valid number in the localhost test environment, and the expected result is that the page will update to include the review and the new rating. The second test case will be to verify that the user cannot post an empty review with no selected fields. 
+    There will be no data inputted into the text box in the localhost test environment, and the expected result is that the review will not be posted since it contains no information. In both cases, the user acceptance testers will be a combination of internal team members and selected testers.
 
-
-
-The test plans should include specific test cases (user acceptance test cases) that describe the data and the user activity that will be executed in order to verify proper functionality of the feature.
-The test plans should include a description of the test data that will be used to test the feature.
-The test plans should include a description of the test environment ( localhost / cloud ) that will be used to test the feature.
-The test plans should include a description of the test results that will be used to test the feature.
-The test plan should include information about the user acceptance testers.
+4.Follow Feature
+    The user should be able to follow games they like and have those games appear on their account page. The first test case will be to verify that the user can select the follow button for a game and that that game will appear on their account.
+    The data used will be a clicked input in the localhost test environment, and the expected result is that the page will redirect you to your account page to show that you are now following the game.
+    The user acceptance tester will be an external user trying to follow a game.
