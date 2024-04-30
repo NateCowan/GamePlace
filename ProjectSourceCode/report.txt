@@ -1,0 +1,88 @@
+Game Place
+Owen Brown(owbr9203), Benjamin Apelman(BenjaminApelman), Nate Cowan(NateCowan), Sabrina Vu(savu2328), Cole Garvey(colegarvey)
+
+
+Our application, GamePlace, is a video game analysis website. Users will be prompted to create their own login credentials to become a member of the GamePlace community. Once logged in, users should be able to explore the different video games that our site has data on, and even help contribute their own reviews! 
+	Our data will be shown to the user through different parts of the website. When looking at the explore page we will have different featured cards of video games that hold more information when clicked on.  Users can use the search bar to find a game they’d like to know more about, or they can discover games by filtering on a selected genre. Not only this, but users are able to create their own reviews on a game and read other reviews written by people in the community as well.  Along with leaving reviews, users can also like a game to add it to a personalized list of games that they can re-visit on their account page.
+Once logged in and viewing the account page, users are able to see a display of all their liked games.  This makes it easier for all of our users to save and come back to games that they are interested in and want to save for future use.
+
+
+Link to the project board
+
+Video: newvid.mp4 
+
+VCS: link to repository
+
+
+Contributions:
+Owen Brown:
+Created GET api route for /game that fetches information from the IGDB database based on an inputted game title and returns a page with its information
+Styled the HTML for game.hbs for the game page
+Implemented the form for writing reviews in game page
+Added code to print out reviews for a game on game page
+Modified POST api route for /game to refresh with same data after sending a review
+Implemented communication between game cards on explore page and the game API route
+Edited inputted image urls to fix resolution using javascript
+Benjamin Apelman:
+Front end code for login and register
+Implemented database for storing users
+Front end code for explore page
+Api call for search and handlebars to dynamically render the results of the the api call on the explore page.
+Endpoints to connect login page with explore and explore to the rest of the website
+Nate Cowan: 
+Created nav bar
+Created footer
+Login/Register page minor fixes/QOL changes
+Registering requires certain length for username/password
+Logging in reloads page with error message
+Error handling for login page
+Styled the login and register pages
+Helped with following functionality
+General user testing/bug fixing
+Sabrina Vu: 
+created the post api route for the reviews
+follow game button on the game page
+redirects and posts route to the account page, once followed. 
+On the Account Page:
+created the unique profile picture for users, first initial of username and random color
+created the get route for followed games
+followed games card
+implemented the redirect to the game page, from the followed games
+
+Cole Garvey:
+	Worked on the server, server.spec, database, and worked within the containerization technologies.  Contributed to the finalized database design, some server routes for retrieving information from database, unit test cases in the server.spec file, layout of the explore page, some styling of the explore and account pages, middleware, README.md, logout feature, script.js file.  
+
+
+Use Case Diagram:
+
+
+Wireframes:
+
+
+
+
+
+
+Testing:
+Test 1: Register
+There are two central test cases for the registration feature. The first is a positive use case in which the user is able to successfully create an account and log in with said account. In testing, the user had some difficulty creating the password as there is nothing other than the error message popup that informs the user of password constraints. However, the user was able to make their account and successfully login, consistent with the use case. The second is a negative use case in which the user attempts to register with a username that is already registered. In testing, the user attempted to register again with the same username, and the site successfully displayed a message informing the user that the account with that username already exists, causing the user to promptly redirect to the login page and log in.
+
+Test 2: Search Bar
+There are two central test cases for the search bar feature. The first is a use case in which the user is able to search for games by genre and receive several games of that genre. In testing, the user clicked on the button to explore with the default genre of ‘Adventure’, bringing up 10 different adventure games on the page, in line with the use case. The second is a use case in which the user is able to search for games by genre and name and receive several games with that genre and name. In testing, the user typed “Mario bros” into the search bar with “Adventure” since they liked Mario, and in turn got 10 adventure games with the words “Mario bros” in the title, which is in line with the test case. At one point, the user typed in “Mario bros U” to try and find a more specific game, but the explore page yielded no results, likely due to the nature of the search feature in the API.  
+Test 3: Reviews
+There are two central test cases for the review feature. The first is a use case in which the user is able to input a number rating and text input, and then have that review posted to the games page. In testing, the user was reviewing the game “Bioshock”, and posted a 10 rating review on how they loved the game. This post successfully added a review to the games page with a message informing the user that it was added, in line with the use case. The second is a use case in which the user cannot input an invalid number into the review post. The user attempted to give “Bioshock” a 0, but due to the nature of the input was unable to input 0. 
+Test 4: Follow
+The use case for follow is that the user is able to follow a game and have that game appear on their account. In testing, the user followed “Bioshock” and was successfully redirected to the account page with “Bioshock” added to their account, in line with the use case. The user also tried to go to the explore page and then back to the account page, attempting to see if their account still had “Bioshock” on it, which it did. 
+
+
+
+Deployment:
+Since  our application is not being hosted in the cloud or by any outside service, we will be deploying the application locally.  To get the application server running locally you must do the following:
+Make sure that you have docker installed on your device
+Go to the project git repository here
+Click the bright green dropdown button that says “<> Code”
+Copy the HTTPS url to clone the repository on your device 
+In the terminal, navigate into the ‘ProjectSourceCode’ folder of the newly cloned repository
+In the terminal, run the ‘docker-compose up’ command and wait for localhost to send a response 
+Now you should be able to use your web browser to load the application by searching for the following url: “http://localhost:3000/”
+
